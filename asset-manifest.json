@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/jurihaataja.com/static/css/main.101b48ee.css",
-    "main.js": "/jurihaataja.com/static/js/main.bc8bc5a4.js",
+    "main.js": "/jurihaataja.com/static/js/main.fddcdfbb.js",
     "static/js/787.617d25da.chunk.js": "/jurihaataja.com/static/js/787.617d25da.chunk.js",
     "index.html": "/jurihaataja.com/index.html",
     "main.101b48ee.css.map": "/jurihaataja.com/static/css/main.101b48ee.css.map",
-    "main.bc8bc5a4.js.map": "/jurihaataja.com/static/js/main.bc8bc5a4.js.map",
+    "main.fddcdfbb.js.map": "/jurihaataja.com/static/js/main.fddcdfbb.js.map",
     "787.617d25da.chunk.js.map": "/jurihaataja.com/static/js/787.617d25da.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.101b48ee.css",
-    "static/js/main.bc8bc5a4.js"
+    "static/js/main.fddcdfbb.js"
   ]
 }
