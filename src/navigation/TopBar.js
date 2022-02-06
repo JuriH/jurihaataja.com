@@ -185,11 +185,11 @@ export default function TopBar(props) {
                                 fontSize: 14,
                                 backgroundColor:
                                     selectedTab.name === tab.name
-                                        ? "#9bb1ffBF"
+                                        ? "#ccdbfd"
                                         : props.activeSections.includes(
                                               tab.name
                                           )
-                                        ? "#e2eafc"
+                                        ? "#e2eafcBF"
                                         : "transparent",
                                 padding: 10,
                                 borderRadius: 15,
