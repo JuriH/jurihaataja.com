@@ -1,55 +1,107 @@
 import * as React from "react"
+import "./topBar.css"
 import { useStyleContext } from "../contexts/StyleProvider"
+
+// import LanguageSwitcher from "../sub-components/LanguageSwitcher"
 
 // Support animated scrolling on Safari as well
 const scroll = require("scroll")
 const page = require("scroll-doc")()
 
-const tabItemRefs = [
-    "contactRef",
-    "bioRef",
-    "skillRef",
-    "socialRef",
-    "languageRef"
+const tabItems = [
+    {
+        name: "Contact",
+        ref: "contactRef",
+    },
+    {
+        name: "Bio",
+        ref: "bioRef",
+    },
+    {
+        name: "Skills",
+        ref: "skillRef",
+    },
+    {
+        name: "Socials",
+        ref: "socialRef",
+    },
+    {
+        name: "Languages",
+        ref: "languageRef",
+    },
 ]
-const tabItems = ["Contact", "Bio", "Skills", "Socials", "Languages"]
-
-function ScrollTopOfSection(item, ref, topBarOffsetY) {
-    scroll.top(
-        page,
-        item === "Contact" ? 0 : ref.offsetTop - topBarOffsetY,
-        function (err, scrollTop) {
-            // console.log(err)
-            // { message: "Scroll cancelled" } or
-            // { message: "Element already at target scroll position" } or
-            // null
-            // console.log(scrollTop)
-            // => The new scrollTop position of the element
-            // This is always returned, even when there’s an `err`.
-        }
-    )
-}
 
 export default function TopBar(props) {
-    const styleContext = useStyleContext()
+    let complete = true
+    React.useEffect(() => {
+        tabItems.some((tab) => {
+            if (props.refs[tab.ref].current === null) {
+                complete = false
+                return true
+            }
+        })
+
+        if (!complete) return
+    }, [props.refs])
+
+    const [topBarOffsetY, setTopBarOffsetY] = React.useState(null)
+
+    // const [scrollingInProgress, setScrollingInProgress] = React.useState(false)
+
+    const [targetSection, setTargetSection] = React.useState(null)
+    React.useEffect(() => {
+        console.log("Target section: " + targetSection)
+        if (props.activeSections.includes(targetSection)) setTargetSection(null)
+    }, [targetSection])
+
     const [selectedTab, setSelectedTab] = React.useState({
         name: null,
-        millis: null
+        ref: null,
+        millis: null,
     })
+
     React.useEffect(() => {
-        if (selectedTab.name !== null && selectedTab.millis !== null) {
-            ScrollTopOfSection(
-                selectedTab.name,
-                props.refs[tabItemRefs[tabItems.indexOf(selectedTab.name)]]
-                    .current,
-                topBarOffsetY
+        console.log("Selected tab: " + selectedTab.name)
+    }, [selectedTab])
+
+    React.useEffect(() => {
+        if (
+            (selectedTab.name !== null,
+            selectedTab.ref !== null,
+            selectedTab.millis !== null)
+        ) {
+            scroll.top(
+                page,
+                tabItems[0].name === selectedTab.name
+                    ? 0
+                    : props.refs[selectedTab.ref].current.offsetTop -
+                          topBarOffsetY,
+                (err, scrollTop) => {}
             )
-            props.callbackTab(selectedTab)
+            props.callbackTab(selectedTab.name)
+        }
+    }, [selectedTab])
+
+    // Automatically scroll to Contact-tab on component mount
+    React.useEffect(() => {
+        if (props.refs.contact !== null) {
+            window.scrollTo({
+                top: 0,
+                left: 0,
+                behavior: "smooth",
+            })
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selectedTab])
-    const [mouseEnterTab, setMouseEnterTab] = React.useState(null)
-    const [topBarOffsetY, setTopBarOffsetY] = React.useState(null)
+    }, [props.refs.contact])
+
+    // React.useEffect(() => {
+    //     console.log("Scrolling in progress: " + scrollingInProgress)
+    // }, [scrollingInProgress])
+
+    // const [mouseEnterTab, setMouseEnterTab] = React.useState(null)
+    // React.useEffect(() => {
+    //     console.log("Mouse enter tab: " + mouseEnterTab)
+    // }, [mouseEnterTab])
     React.useEffect(() => {
         // console.log("topBarOffsetY: " + topBarOffsetY)
         props.callbackHeight(topBarOffsetY)
@@ -63,87 +115,28 @@ export default function TopBar(props) {
             setTopBarOffsetY(topBarRef.current.clientHeight + 1)
     }, [topBarRef])
 
-    // Automatically scroll to Contact-tab when its ref is assigned to it
     React.useEffect(() => {
+        // if (props.activeSections.includes(targetSection)) {
+        //     console.log("Target section reached")
+        //     setTargetSection(null)
+        // }
+        if (props.activeSections.includes(targetSection)) {
+            console.log("Selected tab included in Active Sections")
+            setTargetSection(null)
+        }
         if (
-            props.refs.contactRef.current !== null ||
-            props.refs.contactRef.current !== undefined
+            targetSection === null &&
+            !props.activeSections.includes(selectedTab.name)
         ) {
-            ScrollTopOfSection(
-                "Contact",
-                props.refs.contactRef.current,
-                topBarOffsetY
-            )
+            console.log("Selected tab not included in Active Sections")
             setSelectedTab({
                 ...selectedTab,
-                name: "Contact",
-                millis: 0
+                name: null,
+                ref: null,
+                millis: null,
             })
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props.refs.contactRef.current])
-
-    // Automatically scroll to Contact-tab on component mount
-    React.useEffect(() => {
-        if (
-            props.refs.contactRef.current !== null ||
-            props.refs.contactRef.current !== undefined
-        ) {
-            ScrollTopOfSection(
-                "Contact",
-                props.refs.contactRef.current,
-                topBarOffsetY
-            )
-            setSelectedTab({
-                ...selectedTab,
-                name: "Contact",
-                millis: 0
-            })
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-
-    React.useEffect(() => {
-        if (props.offsetTop === 0 && selectedTab !== "Contact") {
-            setMouseEnterTab(null) // This caused some buggy behaviour with highlighting tab(s)
-            setSelectedTab({
-                ...selectedTab,
-                name: "Contact",
-                millis: null
-            })
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props.offsetTop])
-
-    // // Automatically set selected tab based on user's scrolling
-    // React.useEffect(() => {
-    //     console.log("OffsetTop: " + props.offsetTop)
-    //     console.log("Skill offsetTop: " + props.dims.skillDims.offsetTop)
-    //     console.log(
-    //         "Skill active: " +
-    //             (props.dims.skillDims.offsetTop === props.offsetTop)
-    //     )
-    //     console.log(
-    //         "scrolltop: " +
-    //             props.offsetTop +
-    //             ", active zone: " +
-    //             (props.dims.skillDims.offsetTop +
-    //                 (props.dims.skillDims.height -
-    //                     props.dims.skillDims.offsetTop))
-    //     )
-    //     // if (props.offsetTop) {
-    //     //     Object.keys(props.dims).forEach((dim) => {
-    //     //         console.log("Dim: " + dim.offsetTop)
-    //     //         if (
-    //     //             props.offsetTop >= props.dims[dim].offsetTop &&
-    //     //             props.offsetTop <=
-    //     //                 props.dims[dim].height - props.dims[dim].offsetTop
-    //     //         )
-    //     //             setSelectedTab(props.dims[dim].name)
-    //     //     })
-    //     // }
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [props.offsetTop])
+    }, [props.activeSections])
 
     return (
         <div
@@ -162,73 +155,80 @@ export default function TopBar(props) {
                 backgroundColor: "#ffffff",
                 boxShadow: "0px 1px 10px 0px #dee2e6",
                 marginBottom: 15,
-                WebkitTapHighlightColor: "rgba(0,0,0,0)" // Fixes flickering on tap on Safari iOS
+                WebkitTapHighlightColor: "rgba(0,0,0,0)", // Fixes flickering on tap on Safari iOS
             }}
         >
-            {tabItems.map((item, index) => (
-                // <div
-                //     key={"tabItem" + index}
-                //     style={{
-                //         width: "50vw",
-                //         display: "flex",
-                //         flexDirection: "row",
-                //         alignItems: "center",
-                //         justifyContent: "center"
-                //     }}
-                // >
-                <div
-                    key={"topBarItem" + index}
-                    onClick={() => {
-                        setSelectedTab({
-                            ...selectedTab,
-                            name: item,
-                            millis: new Date()
-                        })
-                        // // Doesn't work smoothly on iOS Safari
-                        // window.scrollTo({
-                        //     top:
-                        //         item === "Contact"
-                        //             ? 0
-                        //             : props.refs[tabItemRefs[index]]
-                        //                   .current.offsetTop -
-                        //               topBarOffsetY,
-                        //     behavior: "smooth",
-                        // })
-                    }}
-                    style={{
-                        cursor: "pointer",
-                        display: "inline-block",
-                        marginRight: index !== tabItems.length - 1 ? "2vw" : 0
-                    }}
-                >
-                    <p
+            {tabItems.map((tab, index) => {
+                return (
+                    <div
+                        className="tab"
+                        key={"topBarItem" + index}
+                        onClick={() => {
+                            console.log("Clicked tab: " + tab.name)
+                            setTargetSection(tab.name)
+                            setSelectedTab({
+                                ...selectedTab,
+                                name: tab.name,
+                                ref: tab.ref,
+                                millis: new Date(),
+                            })
+                        }}
                         style={{
-                            fontSize: 14,
-                            backgroundColor:
-                                mouseEnterTab === index ||
-                                selectedTab.name === item
-                                    ? styleContext.navigation.title.mouseEnter
-                                          .backgroundColor
-                                    : styleContext.navigation.title.mouseLeave
-                                          .backgroundColor,
-                            padding: styleContext.navigation.title.padding,
-                            borderRadius:
-                                styleContext.navigation.title.borderRadius,
-                            transition: "all .5s ease",
-                            WebkitTransition: "all .5s ease",
-                            MozTransition: "all .5s ease"
-                        }}
-                        onMouseEnter={() => {
-                            mouseEnterTab !== index && setMouseEnterTab(index)
-                        }}
-                        onMouseLeave={() => {
-                            mouseEnterTab === index && setMouseEnterTab(null)
+                            cursor: "pointer",
+                            display: "inline-block",
+                            marginRight:
+                                index !== tabItems.length - 1 ? "2vw" : 0,
                         }}
                     >
-                        {item}
-                    </p>
-                </div>
-            ))}
+                        <p
+                            style={{
+                                fontSize: 14,
+                                backgroundColor:
+                                    selectedTab.name === tab.name
+                                        ? "#9bb1ffBF"
+                                        : props.activeSections.includes(
+                                              tab.name
+                                          )
+                                        ? "#e2eafc"
+                                        : "transparent",
+                                padding: 10,
+                                borderRadius: 15,
+                                transition: "all .5s ease",
+                                WebkitTransition: "all .5s ease",
+                                MozTransition: "all .5s ease",
+                            }}
+                            // onMouseEnter={() => {
+                            //     mouseEnterTab !== tab.name &&
+                            //         setMouseEnterTab(tab.name)
+                            // }}
+                            // onMouseLeave={() => {
+                            //     mouseEnterTab === tab.name &&
+                            //         setMouseEnterTab(null)
+                            // }}
+                            // onTouchStart={() => {
+                            //     mouseEnterTab !== tab.name &&
+                            //         setMouseEnterTab(tab.name)
+                            // }}
+                            // onTouchEnd={() => {
+                            //     mouseEnterTab === tab.name &&
+                            //         setMouseEnterTab(null)
+                            // }}
+                        >
+                            {tab.name}
+                        </p>
+                    </div>
+                )
+            })}
+            {/* <div
+                style={{
+                    position: "fixed",
+                    top: window.innerHeight / 2,
+                    backgroundColor: "red",
+                    height: 1,
+                    width: "100vw",
+                }}
+            ></div> */}
+            {/* <LanguageSwitcher /> */}
         </div>
     )
 }

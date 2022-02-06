@@ -71,8 +71,8 @@ function Rating(props) {
                 flexDirection: "row",
             }}
         >
-            {ratingList.map((item) => {
-                return <>{item}</>
+            {ratingList.map((item, index) => {
+                return <div key={"skillItem" + index}>{item}</div>
             })}
         </div>
     )

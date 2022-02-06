@@ -18,16 +18,29 @@ import "react-toastify/dist/ReactToastify.css"
 
 import { useWindowDimensionsContext } from "./contexts/WindowDimensionsProvider"
 
+import InView from "react-intersection-observer"
+
 function App() {
     const [selectedTab, setSelectedTab] = React.useState({
         name: null,
-        millis: new Date()
+        millis: new Date(),
     })
+
+    function updateSelectedTab(tabName) {
+        setSelectedTab({
+            ...selectedTab,
+            name: tabName,
+            millis: new Date(),
+        })
+    }
 
     const windowDimensions = useWindowDimensionsContext()
 
     // Window's offset from the top of the document
     const [offsetTop, setOffsetTop] = React.useState(0)
+    React.useEffect(() => {
+        // console.log(offsetTop)
+    }, [offsetTop])
 
     // Top navigation bar's height
     const [topBarBottomMargin, setTopBarBottomMargin] = React.useState(0)
@@ -38,74 +51,27 @@ function App() {
     const socialRef = React.useRef(null)
     const languageRef = React.useRef(null)
 
-    // const [contactDims, setContactDims] = React.useState({
-    //     name: "Contact",
-    //     offsetTop: null,
-    //     height: null,
-    // })
+    const [activeSections, setActiveSections] = React.useState([])
+    React.useEffect(() => {
+        console.log("Active sections: " + JSON.stringify(activeSections))
+    }, [activeSections])
 
-    // const [skillDims, setSkillDims] = React.useState({
-    //     name: "Skills",
-    //     offsetTop: null,
-    //     height: null,
-    // })
+    function addToActiveSectionArr(toAdd) {
+        if (activeSections.includes(toAdd)) return
+        setActiveSections([...activeSections, toAdd])
+    }
 
-    // const [socialDims, setSocialDims] = React.useState({
-    //     name: "Socials",
-    //     offsetTop: null,
-    //     height: null,
-    // })
-
-    // const [languageDims, setLanguageDims] = React.useState({
-    //     name: "Languages",
-    //     offsetTop: null,
-    //     height: null,
-    // })
-
-    // React.useEffect(() => {
-    //     if (contactRef)
-    //         setContactDims({
-    //             ...contactDims,
-    //             offsetTop: contactRef.current.offsetTop,
-    //             height: contactRef.current.clientHeight,
-    //         })
-    //     if (skillRef)
-    //         console.log(
-    //             skillRef.current.offsetTop +
-    //                 ", " +
-    //                 skillRef.current.clientHeight
-    //         )
-    //     setSkillDims({
-    //         ...skillDims,
-    //         offsetTop: skillRef.current.offsetTop,
-    //         height: skillRef.current.clientHeight,
-    //     })
-    //     if (socialRef)
-    //         setSocialDims({
-    //             ...socialDims,
-    //             offsetTop: socialRef.current.offsetTop,
-    //             height: socialRef.current.clientHeight,
-    //         })
-    //     if (languageRef)
-    //         setLanguageDims({
-    //             ...languageDims,
-    //             offsetTop: languageRef.current.offsetTop,
-    //             height: languageRef.current.clientHeight,
-    //         })
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [contactRef, skillRef, socialRef, languageRef])
+    function removeFromActiveSectionArr(toRemove) {
+        if (!activeSections.includes(toRemove)) return
+        let arrCopy = Array.from(activeSections)
+        const removeIndex = arrCopy.indexOf(toRemove)
+        arrCopy.splice(removeIndex, 1)
+        setActiveSections(arrCopy)
+    }
 
     function TopBarBottomMargin(height) {
         // console.log("TopBarBottomMargin: " + height)
         setTopBarBottomMargin(height)
-    }
-
-    function SetSelectedTab(tabObj) {
-        setSelectedTab({
-            ...selectedTab,
-            name: tabObj.name,
-            millis: tabObj.millis
-        })
     }
 
     function handleScroll() {
@@ -120,6 +86,11 @@ function App() {
 
     // Scrolling listener
     React.useEffect(() => {
+        window.onpageshow = function (event) {
+            if (event.persisted) {
+                window.location.reload()
+            }
+        }
         window.addEventListener("scroll", handleScroll)
         document.addEventListener("contextmenu", (e) => {
             handleRightClick(e)
@@ -130,7 +101,19 @@ function App() {
                 handleRightClick(e)
             })
         }
-    })
+    }, [])
+
+    // // On page refresh start from top of the document
+    // window.onbeforeunload = function () {
+    //     window.scrollTo(0, 0)
+    // }
+
+    // window.onpageshow = function (event) {
+    //     if (event.persisted) {
+    //         // window.location.reload()
+    //         window.scrollTo(0, 0)
+    //     }
+    // }
 
     return (
         <div
@@ -141,7 +124,7 @@ function App() {
                 display: "flex",
                 flexDirection: "column",
                 width: "100%",
-                overflow: "hidden"
+                overflow: "hidden",
             }}
         >
             <ToastContainer
@@ -161,53 +144,114 @@ function App() {
                     bioRef: bioRef,
                     skillRef: skillRef,
                     socialRef: socialRef,
-                    languageRef: languageRef
+                    languageRef: languageRef,
                 }}
-                // dims={{
-                //     contactDims: contactDims,
-                //     skillDims: skillDims,
-                //     socialDims: socialDims,
-                //     languageDims: languageDims,
-                // }}
+                activeSections={activeSections}
                 offsetTop={offsetTop}
                 windowDimensions={windowDimensions}
                 callbackHeight={(height) => {
                     TopBarBottomMargin(height)
                 }}
                 callbackTab={(tabName) => {
-                    SetSelectedTab(tabName)
+                    updateSelectedTab(tabName)
                 }}
             />
             <div
                 style={{
-                    height: topBarBottomMargin + 25
+                    height: topBarBottomMargin + 25,
                 }}
             />
-            <Contact
-                ref={contactRef}
-                windowDimensions={windowDimensions}
-                selectedTab={selectedTab}
-            />
-            <Bio
-                ref={bioRef}
-                windowDimensions={windowDimensions}
-                selectedTab={selectedTab}
-            />
-            <Skills
-                ref={skillRef}
-                windowDimensions={windowDimensions}
-                selectedTab={selectedTab}
-            />
-            <Socials
-                ref={socialRef}
-                windowDimensions={windowDimensions}
-                selectedTab={selectedTab}
-            />
-            <Languages
-                ref={languageRef}
-                windowDimensions={windowDimensions}
-                selectedTab={selectedTab}
-            />
+            <InView
+                as="div"
+                initialInView={true}
+                threshold={1}
+                onChange={(inView) => {
+                    if (inView) {
+                        // console.log("Contact visible")
+                        addToActiveSectionArr("Contact")
+                    } else {
+                        removeFromActiveSectionArr("Contact")
+                    }
+                }}
+            >
+                <Contact
+                    ref={contactRef}
+                    windowDimensions={windowDimensions}
+                    selectedTab={selectedTab}
+                />
+            </InView>
+            <InView
+                as="div"
+                threshold={[0.75, 1]}
+                onChange={(inView) => {
+                    if (inView) {
+                        // console.log("Bio visible")
+                        addToActiveSectionArr("Bio")
+                    } else {
+                        removeFromActiveSectionArr("Bio")
+                    }
+                }}
+            >
+                <Bio
+                    ref={bioRef}
+                    windowDimensions={windowDimensions}
+                    selectedTab={selectedTab}
+                />
+            </InView>
+            <InView
+                as="div"
+                threshold={0.75}
+                onChange={(inView) => {
+                    if (inView) {
+                        // console.log("Skills visible")
+                        addToActiveSectionArr("Skills")
+                    } else {
+                        removeFromActiveSectionArr("Skills")
+                    }
+                }}
+            >
+                <Skills
+                    ref={skillRef}
+                    windowDimensions={windowDimensions}
+                    selectedTab={selectedTab}
+                />
+            </InView>
+            <InView
+                as="div"
+                threshold={1}
+                onChange={(inView) => {
+                    if (inView) {
+                        // console.log("Socials visible")
+                        addToActiveSectionArr("Socials")
+                    } else {
+                        removeFromActiveSectionArr("Socials")
+                    }
+                }}
+            >
+                <Socials
+                    ref={socialRef}
+                    windowDimensions={windowDimensions}
+                    selectedTab={selectedTab}
+                />
+            </InView>
+            <InView
+                as="div"
+                threshold={1}
+                onChange={(inView) => {
+                    if (inView) {
+                        // console.log("Languages visible")
+                        addToActiveSectionArr("Languages")
+                    } else {
+                        removeFromActiveSectionArr("Languages")
+                    }
+                }}
+            >
+                <Languages
+                    ref={languageRef}
+                    windowDimensions={windowDimensions}
+                    selectedTab={selectedTab}
+                />
+            </InView>
             <Footer />
             <ArrowUp offsetTop={offsetTop} triggerOffset={100} />
         </div>

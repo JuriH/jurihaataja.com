@@ -3,14 +3,14 @@ import SkillItem from "../sub-components/SkillItem"
 import { useStyleContext } from "../contexts/StyleProvider"
 
 // https://stackoverflow.com/a/1129270
-function compare( a, b ) {
-    if ( a.rating > b.rating ){
-      return -1;
+function compare(a, b) {
+    if (a.rating > b.rating) {
+        return -1
     }
-    if ( a.rating < b.rating ){
-      return 1;
+    if (a.rating < b.rating) {
+        return 1
     }
-    return 0;
+    return 0
 }
 
 let skillItems = [
@@ -44,11 +44,11 @@ let skillItems = [
     },
     {
         text: "C#",
-        rating: 2
+        rating: 2,
     },
     {
         text: "C++",
-        rating: 2
+        rating: 2,
     },
     {
         text: "Git",

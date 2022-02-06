@@ -4,6 +4,7 @@ import { IoMailOutline, IoCall } from "react-icons/io5"
 import ProfilePicture from "../sub-components/ProfilePicture"
 
 import { useStyleContext } from "../contexts/StyleProvider"
+import { useLanguageContext } from "../contexts/LanguageProvider"
 
 const contactItems = [
     {
@@ -19,6 +20,7 @@ const contactItems = [
 ]
 
 const Contact = React.forwardRef((props, ref) => {
+    const languageContext = useLanguageContext()
     const styleContext = useStyleContext()
     const [enableHighlight, setEnableHighlight] = React.useState(false)
 
@@ -35,6 +37,7 @@ const Contact = React.forwardRef((props, ref) => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.selectedTab.millis])
+
     return (
         <div
             ref={ref}
@@ -66,6 +69,7 @@ const Contact = React.forwardRef((props, ref) => {
                     borderRadius: 10,
                 }}
             >
+                {/* {languageContext === "en" ? "Contact" : "Yhteystiedot"} */}
                 Contact
             </p>
             <div

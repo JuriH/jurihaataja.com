@@ -6,12 +6,15 @@ import reportWebVitals from "./reportWebVitals"
 
 import { StyleProvider } from "./contexts/StyleProvider"
 import { WindowDimensionsProvider } from "./contexts/WindowDimensionsProvider"
+import { LanguageProvider } from "./contexts/LanguageProvider"
 
 ReactDOM.render(
     <React.StrictMode>
         <StyleProvider>
             <WindowDimensionsProvider>
-                <App />
+                <LanguageProvider>
+                    <App />
+                </LanguageProvider>
             </WindowDimensionsProvider>
         </StyleProvider>
     </React.StrictMode>,

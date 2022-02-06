@@ -44,7 +44,7 @@ export default function ArrowUp(props) {
                     alignItems: "center",
                     justifyContent: "center",
                     border: "1px solid rgb(255, 255, 255)",
-                    opacity: 0.9
+                    opacity: 0.9,
                 }}
             >
                 <IoArrowUpOutline
