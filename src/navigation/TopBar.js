@@ -45,6 +45,10 @@ export default function TopBar(props) {
     }, [props.refs])
 
     const [topBarOffsetY, setTopBarOffsetY] = React.useState(null)
+    React.useEffect(() => {
+        topBarOffsetY !== null &&
+            props.callbackHeight(topBarRef.current.clientHeight)
+    }, [topBarOffsetY])
 
     // const [scrollingInProgress, setScrollingInProgress] = React.useState(false)
 
@@ -74,8 +78,7 @@ export default function TopBar(props) {
                 page,
                 tabItems[0].name === selectedTab.name
                     ? 0
-                    : props.refs[selectedTab.ref].current.offsetTop -
-                          topBarOffsetY,
+                    : props.refs[selectedTab.ref].current.offsetTop - 65,
                 (err, scrollTop) => {}
             )
             props.callbackTab(selectedTab.name)
@@ -111,8 +114,7 @@ export default function TopBar(props) {
     const topBarRef = React.useRef(null)
 
     React.useEffect(() => {
-        topBarRef !== null &&
-            setTopBarOffsetY(topBarRef.current.clientHeight + 1)
+        topBarRef !== null && setTopBarOffsetY(topBarRef.current.clientHeight)
     }, [topBarRef])
 
     React.useEffect(() => {

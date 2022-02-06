@@ -43,7 +43,6 @@ const Contact = React.forwardRef((props, ref) => {
             ref={ref}
             style={{
                 marginBottom: 25,
-                backgroundColor: "#f8f9fa",
                 // paddingTop: 10, // To compensate with added padding in section title for highlighting effect                paddingBottom: 10,
                 paddingLeft: 15,
                 paddingRight: 15,
@@ -53,6 +52,7 @@ const Contact = React.forwardRef((props, ref) => {
                 flexDirection: "column",
                 justifyContent: "space-between",
                 alignItems: "center",
+                backgroundColor: "#f8f9fa",
             }}
         >
             <p

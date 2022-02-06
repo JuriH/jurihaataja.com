@@ -26,14 +26,6 @@ function App() {
         millis: new Date(),
     })
 
-    function updateSelectedTab(tabName) {
-        setSelectedTab({
-            ...selectedTab,
-            name: tabName,
-            millis: new Date(),
-        })
-    }
-
     const windowDimensions = useWindowDimensionsContext()
 
     // Window's offset from the top of the document
@@ -43,7 +35,10 @@ function App() {
     }, [offsetTop])
 
     // Top navigation bar's height
-    const [topBarBottomMargin, setTopBarBottomMargin] = React.useState(0)
+    const [topBarBottomMargin, setTopBarBottomMargin] = React.useState(null)
+    React.useEffect(() => {
+        console.log("Top bar bottom margin: " + topBarBottomMargin)
+    }, [topBarBottomMargin])
 
     const contactRef = React.useRef(null)
     const bioRef = React.useRef(null)
@@ -103,18 +98,6 @@ function App() {
         }
     }, [])
 
-    // // On page refresh start from top of the document
-    // window.onbeforeunload = function () {
-    //     window.scrollTo(0, 0)
-    // }
-
-    // window.onpageshow = function (event) {
-    //     if (event.persisted) {
-    //         // window.location.reload()
-    //         window.scrollTo(0, 0)
-    //     }
-    // }
-
     return (
         <div
             className="App"
@@ -153,7 +136,11 @@ function App() {
                     TopBarBottomMargin(height)
                 }}
                 callbackTab={(tabName) => {
-                    updateSelectedTab(tabName)
+                    setSelectedTab({
+                        ...selectedTab,
+                        name: tabName,
+                        millis: new Date(),
+                    })
                 }}
             />
             <div
@@ -162,12 +149,15 @@ function App() {
                 }}
             />
             <InView
+                rootMargin={`-${
+                    topBarBottomMargin !== null ? topBarBottomMargin : 0
+                }px 0px 0px 0px`}
                 as="div"
                 initialInView={true}
-                threshold={1}
+                // threshold={1}
                 onChange={(inView) => {
                     if (inView) {
-                        // console.log("Contact visible")
+                        console.log("Contact visible")
                         addToActiveSectionArr("Contact")
                     } else {
                         removeFromActiveSectionArr("Contact")
@@ -181,8 +171,11 @@ function App() {
                 />
             </InView>
             <InView
+                rootMargin={`-${
+                    topBarBottomMargin !== null ? topBarBottomMargin : 0
+                }px 0px 0px 0px`}
                 as="div"
-                threshold={[0.75, 1]}
+                // threshold={[0.75, 1]}
                 onChange={(inView) => {
                     if (inView) {
                         // console.log("Bio visible")
@@ -199,8 +192,11 @@ function App() {
                 />
             </InView>
             <InView
+                rootMargin={`-${
+                    topBarBottomMargin !== null ? topBarBottomMargin : 0
+                }px 0px 0px 0px`}
                 as="div"
-                threshold={0.75}
+                // threshold={0.75}
                 onChange={(inView) => {
                     if (inView) {
                         // console.log("Skills visible")
@@ -217,8 +213,11 @@ function App() {
                 />
             </InView>
             <InView
+                rootMargin={`-${
+                    topBarBottomMargin !== null ? topBarBottomMargin : 0
+                }px 0px 0px 0px`}
                 as="div"
-                threshold={1}
+                // threshold={1}
                 onChange={(inView) => {
                     if (inView) {
                         // console.log("Socials visible")
@@ -235,8 +234,11 @@ function App() {
                 />
             </InView>
             <InView
+                rootMargin={`-${
+                    topBarBottomMargin !== null ? topBarBottomMargin : 0
+                }px 0px 0px 0px`}
                 as="div"
-                threshold={1}
+                // threshold={1}
                 onChange={(inView) => {
                     if (inView) {
                         // console.log("Languages visible")
