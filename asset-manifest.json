@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/jurihaataja.com/static/css/main.3bd51db1.css",
-    "main.js": "/jurihaataja.com/static/js/main.d5786407.js",
+    "main.css": "/jurihaataja.com/static/css/main.335ab92d.css",
+    "main.js": "/jurihaataja.com/static/js/main.a2e0dea3.js",
     "static/js/787.617d25da.chunk.js": "/jurihaataja.com/static/js/787.617d25da.chunk.js",
     "static/media/profilePicture.png": "/jurihaataja.com/static/media/profilePicture.c4c719aeb557d75d7314.png",
     "index.html": "/jurihaataja.com/index.html",
-    "main.3bd51db1.css.map": "/jurihaataja.com/static/css/main.3bd51db1.css.map",
-    "main.d5786407.js.map": "/jurihaataja.com/static/js/main.d5786407.js.map",
+    "main.335ab92d.css.map": "/jurihaataja.com/static/css/main.335ab92d.css.map",
+    "main.a2e0dea3.js.map": "/jurihaataja.com/static/js/main.a2e0dea3.js.map",
     "787.617d25da.chunk.js.map": "/jurihaataja.com/static/js/787.617d25da.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.3bd51db1.css",
-    "static/js/main.d5786407.js"
+    "static/css/main.335ab92d.css",
+    "static/js/main.a2e0dea3.js"
   ]
 }
