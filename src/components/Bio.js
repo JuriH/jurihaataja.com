@@ -12,7 +12,7 @@ function getAge(dateString) {
     return age
 }
 
-const Firstname = () => (
+const Firstname = (props) => (
     <div
         style={{
             display: "flex",
@@ -20,12 +20,14 @@ const Firstname = () => (
             justifyContent: "space-between",
         }}
     >
-        <p>Firstname</p>
-        <p>Juri</p>
+        <p style={{ color: props.styleContext.content.header.color }}>
+            Firstname
+        </p>
+        <p style={{ color: props.styleContext.content.text.color }}>Juri</p>
     </div>
 )
 
-const Lastname = () => (
+const Lastname = (props) => (
     <div
         style={{
             display: "flex",
@@ -33,12 +35,14 @@ const Lastname = () => (
             justifyContent: "space-between",
         }}
     >
-        <p>Lastname</p>
-        <p>Haataja</p>
+        <p style={{ color: props.styleContext.content.header.color }}>
+            Lastname
+        </p>
+        <p style={{ color: props.styleContext.content.text.color }}>Haataja</p>
     </div>
 )
 
-const Born = () => (
+const Born = (props) => (
     <div
         style={{
             display: "flex",
@@ -46,12 +50,12 @@ const Born = () => (
             justifyContent: "space-between",
         }}
     >
-        <p>Born</p>
-        <p>1996</p>
+        <p style={{ color: props.styleContext.content.header.color }}>Born</p>
+        <p style={{ color: props.styleContext.content.text.color }}>1996</p>
     </div>
 )
 
-const Age = () => (
+const Age = (props) => (
     <div
         style={{
             display: "flex",
@@ -59,12 +63,14 @@ const Age = () => (
             justifyContent: "space-between",
         }}
     >
-        <p>Age</p>
-        <p>{getAge(new Date(new Date("1996-02-21T07:00:00")))}</p>
+        <p style={{ color: props.styleContext.content.header.color }}>Age</p>
+        <p style={{ color: props.styleContext.content.text.color }}>
+            {getAge(new Date(new Date("1996-02-21T07:00:00")))}
+        </p>
     </div>
 )
 
-const CurrentRole = () => (
+const CurrentRole = (props) => (
     <div
         style={{
             display: "flex",
@@ -75,39 +81,50 @@ const CurrentRole = () => (
     >
         <p>Current role</p>
         <p
-        // style={{
-        //     backgroundColor: "#b9fbc080",
-        //     padding: 10,
-        //     borderRadius: 15
-        // }}
+            style={{ color: props.styleContext.content.text.color }}
+            // style={{
+            //     backgroundColor: "#b9fbc080",
+            //     padding: 10,
+            //     borderRadius: 15
+            // }}
         >
             Student
         </p>
     </div>
 )
 
-const Goal = () => (
+const Goal = (props) => (
     <div
+        className="section"
         style={{
             display: "flex",
-            flex: 1,
-            flexDirection: "row",
-            justifyContent: "space-between",
+            flexDirection: "column",
             alignItems: "center",
         }}
     >
-        <p style={{ alignSelf: "flex-start", flex: 1, textAlign: "start" }}>
+        <p
+            style={{
+                alignSelf: "flex-start",
+                textAlign: "start",
+                color: props.styleContext.content.header.color,
+            }}
+        >
             Goals
         </p>
         <div
             style={{
-                flex: 1,
                 whiteSpace: "normal",
                 overflowWrap: "break-word",
-                textAlign: "center",
+                textAlign: "left",
             }}
         >
-            <p>
+            <p
+                style={{
+                    color: props.styleContext.content.text.color,
+                    paddingBottom: 10,
+                    margin: 0,
+                }}
+            >
                 Get employed in the industry in order to learn more about
                 programming and to connect with new people
             </p>
@@ -115,7 +132,7 @@ const Goal = () => (
     </div>
 )
 
-const Achievement = () => {
+const Achievement = (props) => {
     const keywords = [
         {
             word: "javascript",
@@ -131,21 +148,32 @@ const Achievement = () => {
         <div
             style={{
                 display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
+                flexDirection: "column",
                 alignItems: "center",
             }}
         >
-            <p style={{ alignSelf: "flex-start" }}>Achievements</p>
+            <p
+                style={{
+                    alignSelf: "flex-start",
+                    color: props.styleContext.content.header.color,
+                }}
+            >
+                Achievements
+            </p>
             <div
                 style={{
                     whiteSpace: "normal",
                     overflowWrap: "break-word",
-                    maxWidth: "50%",
-                    textAlign: "center",
+                    textAlign: "left",
                 }}
             >
-                <p>
+                <p
+                    style={{
+                        color: props.styleContext.content.text.color,
+                        paddingBottom: 10,
+                        margin: 0,
+                    }}
+                >
                     Biggest achievement has been learning to use JavaScript and
                     React, as they can enable even a solo developer to do so
                     much
@@ -168,6 +196,7 @@ const Bio = React.forwardRef((props, ref) => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.selectedTab.millis])
+
     return (
         <div
             ref={ref}
@@ -200,13 +229,13 @@ const Bio = React.forwardRef((props, ref) => {
             >
                 Bio
             </p>
-            <Firstname />
-            <Lastname />
-            <Born />
-            <Age />
-            <CurrentRole />
-            <Goal />
-            <Achievement />
+            <Firstname styleContext={styleContext} />
+            <Lastname styleContext={styleContext} />
+            <Born styleContext={styleContext} />
+            <Age styleContext={styleContext} />
+            <CurrentRole styleContext={styleContext} />
+            <Goal styleContext={styleContext} />
+            <Achievement styleContext={styleContext} />
         </div>
     )
 })

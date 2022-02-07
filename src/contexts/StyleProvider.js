@@ -17,15 +17,15 @@ export function StyleProvider({ children }) {
             container: {
                 borderRadius: 10,
             },
+            header: {
+                color: "#212529",
+            },
+            text: {
+                color: "#6c757d",
+            },
         },
         navigation: {
             title: {
-                mouseEnter: {
-                    backgroundColor: "#e2eafc",
-                },
-                mouseLeave: {
-                    backgroundColor: "transparent",
-                },
                 borderRadius: 15,
                 padding: 10,
             },

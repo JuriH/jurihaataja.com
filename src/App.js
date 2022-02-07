@@ -5,6 +5,7 @@ import "./App.css"
 import TopBar from "./navigation/TopBar"
 import Contact from "./components/Contact"
 import Bio from "./components/Bio"
+import Education from "./components/Education"
 import Skills from "./components/Skills"
 import Socials from "./components/Socials"
 import Languages from "./components/Languages"
@@ -42,6 +43,7 @@ function App() {
 
     const contactRef = React.useRef(null)
     const bioRef = React.useRef(null)
+    const educationRef = React.useRef(null)
     const skillRef = React.useRef(null)
     const socialRef = React.useRef(null)
     const languageRef = React.useRef(null)
@@ -125,6 +127,7 @@ function App() {
                 refs={{
                     contactRef: contactRef,
                     bioRef: bioRef,
+                    educationRef: educationRef,
                     skillRef: skillRef,
                     socialRef: socialRef,
                     languageRef: languageRef,
@@ -191,6 +194,27 @@ function App() {
                     selectedTab={selectedTab}
                 />
             </InView>
+            {/* <InView
+                rootMargin={`-${
+                    topBarBottomMargin !== null ? topBarBottomMargin : 0
+                }px 0px 0px 0px`}
+                as="div"
+                // threshold={[0.75, 1]}
+                onChange={(inView) => {
+                    if (inView) {
+                        // console.log("Bio visible")
+                        addToActiveSectionArr("Education")
+                    } else {
+                        removeFromActiveSectionArr("Education")
+                    }
+                }}
+            >
+                <Education
+                    ref={educationRef}
+                    windowDimensions={windowDimensions}
+                    selectedTab={selectedTab}
+                />
+            </InView> */}
             <InView
                 rootMargin={`-${
                     topBarBottomMargin !== null ? topBarBottomMargin : 0

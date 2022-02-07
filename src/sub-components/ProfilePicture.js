@@ -9,7 +9,8 @@ export default function ProfilePicture() {
                 style={{
                     width: keepAspectRatioSize.width,
                     height: keepAspectRatioSize.height,
-                    borderRadius: 150
+                    borderRadius: 150,
+                    border: "1px solid #e9ecef",
                 }}
                 src={profilePicture}
                 alt="Me"

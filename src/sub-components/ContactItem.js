@@ -2,6 +2,7 @@ import * as React from "react"
 import { CopyToClipboard } from "react-copy-to-clipboard"
 import { toast } from "react-toastify"
 import { IoCopy } from "react-icons/io5"
+import { useStyleContext } from "../contexts/StyleProvider"
 
 function getTypeToastMessage(type) {
     switch (type) {
@@ -15,6 +16,7 @@ function getTypeToastMessage(type) {
 }
 
 export default function ContactItem(props) {
+    const styleContext = useStyleContext()
     const [mouseOver, setMouseOver] = React.useState(false)
     React.useEffect(() => {
         // console.log("MouseOver: " + mouseOver)
@@ -77,7 +79,14 @@ export default function ContactItem(props) {
                     )
                 }}
             >
-                <span style={{ marginRight: 15 }}>{props.text}</span>
+                <span
+                    style={{
+                        marginRight: 15,
+                        color: styleContext.content.text.color,
+                    }}
+                >
+                    {props.text}
+                </span>
                 <props.icon />
             </div>
             <CopyToClipboard

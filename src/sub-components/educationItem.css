@@ -1,0 +1,17 @@
+.educationItemIcon:hover {
+    background-color: #dee2e6;
+    align-items: center;
+    justify-content: center;
+}
+
+.educationPeriodItem {
+    overflow: hidden;
+    transition: transform 0.3s linear;
+    height: auto;
+    transform: scaleY(0);
+    transform-origin: top;
+}
+
+.educationPeriodItem-collapsed {
+    transform: scaleY(1);
+}

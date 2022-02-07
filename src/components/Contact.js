@@ -5,6 +5,7 @@ import ProfilePicture from "../sub-components/ProfilePicture"
 
 import { useStyleContext } from "../contexts/StyleProvider"
 import { useLanguageContext } from "../contexts/LanguageProvider"
+import "../App.css"
 
 const contactItems = [
     {
@@ -47,9 +48,7 @@ const Contact = React.forwardRef((props, ref) => {
                 paddingLeft: 15,
                 paddingRight: 15,
                 borderRadius: 10,
-                display: "flex",
                 width: props.windowDimensions.width > 500 ? 500 : "75vw",
-                flexDirection: "column",
                 justifyContent: "space-between",
                 alignItems: "center",
                 backgroundColor: "#f8f9fa",
@@ -67,6 +66,7 @@ const Contact = React.forwardRef((props, ref) => {
                     display: "inline-block",
                     padding: 10,
                     borderRadius: 10,
+                    color: styleContext.content.header.color,
                 }}
             >
                 {/* {languageContext === "en" ? "Contact" : "Yhteystiedot"} */}

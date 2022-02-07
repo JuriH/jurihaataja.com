@@ -32,6 +32,7 @@ export default function LanguageItem(props) {
                         marginRight: 15,
                         borderRadius: 5,
                         overflow: "hidden",
+                        border: "1px solid #e9ecef",
                     }}
                 />
                 <p style={{ marginRight: 15 }}>{props.text}</p>

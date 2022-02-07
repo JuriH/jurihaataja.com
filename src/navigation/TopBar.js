@@ -17,6 +17,10 @@ const tabItems = [
         name: "Bio",
         ref: "bioRef",
     },
+    // {
+    //     name: "Education",
+    //     ref: "educationRef",
+    // },
     {
         name: "Skills",
         ref: "skillRef",
@@ -147,6 +151,7 @@ export default function TopBar(props) {
                 userSelect: "none",
                 display: "flex",
                 flexDirection: "row",
+                flexWrap: "wrap",
                 alignItems: "center",
                 justifyContent: "center",
                 position: "fixed",
@@ -156,7 +161,8 @@ export default function TopBar(props) {
                 width: "100vw",
                 backgroundColor: "#ffffff",
                 boxShadow: "0px 1px 10px 0px #dee2e6",
-                marginBottom: 15,
+                paddingTop: 10,
+                paddingBottom: 5,
                 WebkitTapHighlightColor: "rgba(0,0,0,0)", // Fixes flickering on tap on Safari iOS
             }}
         >
@@ -178,8 +184,9 @@ export default function TopBar(props) {
                         style={{
                             cursor: "pointer",
                             display: "inline-block",
-                            marginRight:
-                                index !== tabItems.length - 1 ? "2vw" : 0,
+                            marginLeft: 10,
+                            marginRight: 10,
+                            marginBottom: 5,
                         }}
                     >
                         <p
@@ -198,6 +205,7 @@ export default function TopBar(props) {
                                 transition: "all .5s ease",
                                 WebkitTransition: "all .5s ease",
                                 MozTransition: "all .5s ease",
+                                margin: 0,
                             }}
                             // onMouseEnter={() => {
                             //     mouseEnterTab !== tab.name &&

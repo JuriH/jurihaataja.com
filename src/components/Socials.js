@@ -6,12 +6,12 @@ import { useStyleContext } from "../contexts/StyleProvider"
 const socialItems = [
     {
         link: "https://www.linkedin.com/in/juri-haataja-618044185/",
-        icon: IoLogoLinkedin
+        icon: IoLogoLinkedin,
     },
     {
         link: "https://github.com/JuriH",
-        icon: IoLogoGithub
-    }
+        icon: IoLogoGithub,
+    },
 ]
 
 const Socials = React.forwardRef((props, ref) => {
@@ -40,7 +40,7 @@ const Socials = React.forwardRef((props, ref) => {
                 paddingLeft: 15,
                 paddingRight: 15,
                 borderRadius: 10,
-                width: props.windowDimensions.width > 500 ? 500 : "75vw"
+                width: props.windowDimensions.width > 500 ? 500 : "75vw",
             }}
         >
             <div>
@@ -56,7 +56,7 @@ const Socials = React.forwardRef((props, ref) => {
                         WebkitAnimationDuration: ".5s",
                         display: "inline-block",
                         padding: 10,
-                        borderRadius: 10
+                        borderRadius: 10,
                     }}
                 >
                     Socials
@@ -66,7 +66,7 @@ const Socials = React.forwardRef((props, ref) => {
                         display: "flex",
                         flexDirection: "row",
                         alignItems: "center",
-                        justifyContent: "center"
+                        justifyContent: "center",
                     }}
                 >
                     {socialItems.map((item) => (
