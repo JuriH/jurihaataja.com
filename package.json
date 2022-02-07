@@ -24,6 +24,7 @@
         "react-transition-group": "^4.4.2",
         "scroll": "^3.0.1",
         "scroll-doc": "^0.2.1",
+        "uuid": "^8.3.2",
         "web-vitals": "^2.1.4"
     },
     "scripts": {

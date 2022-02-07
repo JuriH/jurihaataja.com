@@ -133,16 +133,16 @@ const Goal = (props) => (
 )
 
 const Achievement = (props) => {
-    const keywords = [
-        {
-            word: "javascript",
-            tag: "interest",
-        },
-        {
-            word: "react",
-            tag: "interest",
-        },
-    ]
+    // const keywords = [
+    //     {
+    //         word: "javascript",
+    //         tag: "interest",
+    //     },
+    //     {
+    //         word: "react",
+    //         tag: "interest",
+    //     },
+    // ]
 
     return (
         <div

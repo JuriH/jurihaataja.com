@@ -82,7 +82,8 @@ export default function TopBar(props) {
                 page,
                 tabItems[0].name === selectedTab.name
                     ? 0
-                    : props.refs[selectedTab.ref].current.offsetTop - 65,
+                    : props.refs[selectedTab.ref].current.offsetTop -
+                          topBarOffsetY,
                 (err, scrollTop) => {}
             )
             props.callbackTab(selectedTab.name)
