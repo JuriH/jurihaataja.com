@@ -37,12 +37,12 @@ const Info = (props) => {
         const innerTextHeight = document.body.querySelectorAll(
             '[data-testid="info-text"]'
         )[props.index + 1].scrollHeight
-        // console.log(
-        //     "innerTextHeight: " +
-        //         innerTextHeight +
-        //         " vs container: " +
-        //         infoContentHeight
-        // )
+        console.log(
+            "innerTextHeight: " +
+                innerTextHeight +
+                " vs container: " +
+                infoContentHeight
+        )
         setInnerTextHeight(innerTextHeight)
         setTextOverflow(innerTextHeight > infoContentHeight)
     }
@@ -52,11 +52,11 @@ const Info = (props) => {
         if (props.currentActiveSlide !== props.index + 1 && revealed)
             setRevealed(false)
         // Don't execute useEffect's code if user not in the current slide
-        if (
-            props.currentActiveSlide !== props.index + 1 ||
-            textOverflow !== null
-        )
-            return
+        // if (
+        //     props.currentActiveSlide !== props.index + 1 ||
+        //     textOverflow === null
+        // )
+        //     return
         // console.log(
         //     "Current slide at index " +
         //         props.index +
