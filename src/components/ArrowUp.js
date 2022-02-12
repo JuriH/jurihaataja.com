@@ -21,6 +21,7 @@ export default function ArrowUp(props) {
     return (
         <div
             style={{
+                zIndex: 1000,
                 position: "fixed",
                 right: 0,
                 bottom: 0,

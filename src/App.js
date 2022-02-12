@@ -1,4 +1,5 @@
 import * as React from "react"
+import { View, TouchableWithoutFeedback, Text } from "react-native"
 
 import "./App.css"
 
@@ -21,7 +22,10 @@ import { useWindowDimensionsContext } from "./contexts/WindowDimensionsProvider"
 
 import InView from "react-intersection-observer"
 
-function App() {
+const scroll = require("scroll")
+const page = require("scroll-doc")()
+
+function App({ route, navigation }) {
     const [selectedTab, setSelectedTab] = React.useState({
         name: null,
         millis: new Date(),
@@ -38,7 +42,7 @@ function App() {
     // Top navigation bar's height
     const [topBarBottomMargin, setTopBarBottomMargin] = React.useState(null)
     React.useEffect(() => {
-        console.log("Top bar bottom margin: " + topBarBottomMargin)
+        // console.log("Top bar bottom margin: " + topBarBottomMargin)
     }, [topBarBottomMargin])
 
     const contactRef = React.useRef(null)
@@ -50,7 +54,7 @@ function App() {
 
     const [activeSections, setActiveSections] = React.useState([])
     React.useEffect(() => {
-        console.log("Active sections: " + JSON.stringify(activeSections))
+        // console.log("Active sections: " + JSON.stringify(activeSections))
     }, [activeSections])
 
     function addToActiveSectionArr(toAdd) {
@@ -160,7 +164,7 @@ function App() {
                 // threshold={1}
                 onChange={(inView) => {
                     if (inView) {
-                        console.log("Contact visible")
+                        // console.log("Contact visible")
                         addToActiveSectionArr("Contact")
                     } else {
                         removeFromActiveSectionArr("Contact")
@@ -194,7 +198,7 @@ function App() {
                     selectedTab={selectedTab}
                 />
             </InView>
-            {/* <InView
+            <InView
                 rootMargin={`-${
                     topBarBottomMargin !== null ? topBarBottomMargin : 0
                 }px 0px 0px 0px`}
@@ -210,11 +214,13 @@ function App() {
                 }}
             >
                 <Education
+                    activeSections={activeSections}
                     ref={educationRef}
                     windowDimensions={windowDimensions}
                     selectedTab={selectedTab}
+                    topBarBottomMargin={topBarBottomMargin}
                 />
-            </InView> */}
+            </InView>
             <InView
                 rootMargin={`-${
                     topBarBottomMargin !== null ? topBarBottomMargin : 0

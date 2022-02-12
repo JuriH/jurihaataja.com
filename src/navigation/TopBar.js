@@ -17,10 +17,10 @@ const tabItems = [
         name: "Bio",
         ref: "bioRef",
     },
-    // {
-    //     name: "Education",
-    //     ref: "educationRef",
-    // },
+    {
+        name: "Education",
+        ref: "educationRef",
+    },
     {
         name: "Skills",
         ref: "skillRef",
@@ -36,18 +36,6 @@ const tabItems = [
 ]
 
 export default function TopBar(props) {
-    let complete = true
-    React.useEffect(() => {
-        tabItems.some((tab) => {
-            if (props.refs[tab.ref].current === null) {
-                complete = false
-                return true
-            }
-        })
-
-        if (!complete) return
-    }, [props.refs])
-
     const [topBarOffsetY, setTopBarOffsetY] = React.useState(null)
     React.useEffect(() => {
         topBarOffsetY !== null &&
@@ -58,7 +46,7 @@ export default function TopBar(props) {
 
     const [targetSection, setTargetSection] = React.useState(null)
     React.useEffect(() => {
-        console.log("Target section: " + targetSection)
+        // console.log("Target section: " + targetSection)
         if (props.activeSections.includes(targetSection)) setTargetSection(null)
     }, [targetSection])
 
@@ -69,7 +57,7 @@ export default function TopBar(props) {
     })
 
     React.useEffect(() => {
-        console.log("Selected tab: " + selectedTab.name)
+        // console.log("Selected tab: " + selectedTab.name)
     }, [selectedTab])
 
     React.useEffect(() => {
@@ -103,15 +91,15 @@ export default function TopBar(props) {
     }, [props.refs.contact])
 
     // React.useEffect(() => {
-    //     console.log("Scrolling in progress: " + scrollingInProgress)
+    //     // console.log("Scrolling in progress: " + scrollingInProgress)
     // }, [scrollingInProgress])
 
     // const [mouseEnterTab, setMouseEnterTab] = React.useState(null)
     // React.useEffect(() => {
-    //     console.log("Mouse enter tab: " + mouseEnterTab)
+    //     // console.log("Mouse enter tab: " + mouseEnterTab)
     // }, [mouseEnterTab])
     React.useEffect(() => {
-        // console.log("topBarOffsetY: " + topBarOffsetY)
+        // // console.log("topBarOffsetY: " + topBarOffsetY)
         props.callbackHeight(topBarOffsetY)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [topBarOffsetY])
@@ -124,18 +112,18 @@ export default function TopBar(props) {
 
     React.useEffect(() => {
         // if (props.activeSections.includes(targetSection)) {
-        //     console.log("Target section reached")
+        //     // console.log("Target section reached")
         //     setTargetSection(null)
         // }
         if (props.activeSections.includes(targetSection)) {
-            console.log("Selected tab included in Active Sections")
+            // console.log("Selected tab included in Active Sections")
             setTargetSection(null)
         }
         if (
             targetSection === null &&
             !props.activeSections.includes(selectedTab.name)
         ) {
-            console.log("Selected tab not included in Active Sections")
+            // console.log("Selected tab not included in Active Sections")
             setSelectedTab({
                 ...selectedTab,
                 name: null,
@@ -173,7 +161,7 @@ export default function TopBar(props) {
                         className="tab"
                         key={"topBarItem" + index}
                         onClick={() => {
-                            console.log("Clicked tab: " + tab.name)
+                            // console.log("Clicked tab: " + tab.name)
                             setTargetSection(tab.name)
                             setSelectedTab({
                                 ...selectedTab,
