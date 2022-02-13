@@ -1,7 +1,46 @@
 import * as React from "react"
 import calculateAspectRatioFit from "../utils/calculateAspectRatio"
+import "./languageItem.css"
+
+import { useLanguageContext } from "../contexts/LanguageProvider"
+
+const text = {
+    language: {
+        finnish: {
+            en: "Finnish",
+            fi: "Suomi",
+        },
+        english: {
+            en: "English",
+            fi: "Englanti",
+        },
+        swedish: {
+            en: "Swedish",
+            fi: "Ruotsi",
+        },
+    },
+    rating: {
+        native: {
+            en: "Native",
+            fi: "Äidinkieli",
+        },
+        excellent: {
+            en: "Excellent",
+            fi: "Erinomainen",
+        },
+        good: {
+            en: "Good",
+            fi: "Hyvä",
+        },
+        basics: {
+            en: "Basics",
+            fi: "Perusteet",
+        },
+    },
+}
 
 export default function LanguageItem(props) {
+    const languageContext = useLanguageContext()
     const keepAspectRatioSize = calculateAspectRatioFit(1191, 793.92, 50, 50)
     return (
         <div
@@ -35,7 +74,16 @@ export default function LanguageItem(props) {
                         border: "1px solid #e9ecef",
                     }}
                 />
-                <p style={{ marginRight: 15 }}>{props.text}</p>
+                <p
+                    className={languageContext.className}
+                    style={{ marginRight: 15 }}
+                >
+                    {
+                        text.language[props.text.toLowerCase()][
+                            languageContext.language
+                        ]
+                    }
+                </p>
             </div>
             <div
                 style={{
@@ -47,10 +95,15 @@ export default function LanguageItem(props) {
             >
                 {Object.keys(props.rating).map((item, index) => (
                     <p
+                        className={languageContext.className}
                         key={"languageItem" + index}
                         style={{ flex: 1, textAlign: "center" }}
                     >
-                        {props.rating[item]}
+                        {
+                            text.rating[props.rating[item].toLowerCase()][
+                                languageContext.language
+                            ]
+                        }
                     </p>
                 ))}
             </div>

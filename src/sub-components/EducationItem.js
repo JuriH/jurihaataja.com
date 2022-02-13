@@ -1,5 +1,6 @@
 import * as React from "react"
 import { IoChevronDown } from "react-icons/io5"
+import { useLanguageContext } from "../contexts/LanguageProvider"
 import { useStyleContext } from "../contexts/StyleProvider"
 import "./educationItem.css"
 
@@ -42,8 +43,11 @@ const SchoolNameLong = (props) => (
             marginBottom: 10,
         }}
     >
-        <p style={{ margin: 0, fontSize: 14, textAlign: "start" }}>
-            {props.nameOfSchool.long}
+        <p
+            className={props.languageContext.className}
+            style={{ margin: 0, fontSize: 14, textAlign: "start" }}
+        >
+            {props.nameOfSchool.long[props.languageContext.language]}
         </p>
     </div>
 )
@@ -62,6 +66,7 @@ const SchoolNameShort = (props) => (
 
 const EducationSpecialization = (props) => (
     <p
+        className={props.languageContext.className}
         style={{
             marginTop: 0,
             marginBottom: 10,
@@ -69,31 +74,47 @@ const EducationSpecialization = (props) => (
             fontSize: 14,
         }}
     >
-        {props.specialization}
+        {props.specialization[props.languageContext.language]}
     </p>
 )
 
-const EducationTimeframe = (props) => (
-    <p
-        style={{
-            display: "inline-block",
-            marginTop: 10,
-            color: "#343a40",
-            // color: props.styleContext.content.text.color,
-            textAlign: "start",
-            backgroundColor: "#ffd670BF",
-            padding: 5,
-            borderRadius: borderRadius,
-            marginBottom: 5,
-        }}
-    >
-        {props.yearStarted +
-            " - " +
-            (props.yearEnded === null ? "Present" : props.yearEnded)}
-    </p>
-)
+const EducationTimeframe = (props) => {
+    const text = {
+        present: {
+            en: "Present",
+            fi: "Nykyhetki",
+        },
+    }
+    function getLocalizedPresent() {
+        return text.present[props.languageContext.language]
+    }
+
+    return (
+        <p
+            className={props.languageContext.className}
+            style={{
+                display: "inline-block",
+                marginTop: 10,
+                color: "#343a40",
+                // color: props.styleContext.content.text.color,
+                textAlign: "start",
+                backgroundColor: "#ffd670BF",
+                padding: 5,
+                borderRadius: borderRadius,
+                marginBottom: 5,
+            }}
+        >
+            {props.yearStarted +
+                " - " +
+                (props.yearEnded === null
+                    ? getLocalizedPresent()
+                    : props.yearEnded)}
+        </p>
+    )
+}
 
 const EducationItem = (props) => {
+    const languageContext = useLanguageContext()
     const styleContext = useStyleContext()
 
     const [revealed, setRevealed] = React.useState(false)
@@ -155,6 +176,7 @@ const EducationItem = (props) => {
                         nameOfSchool={props.education.nameOfSchool}
                     />
                     <SchoolNameLong
+                        languageContext={languageContext}
                         nameOfSchool={props.education.nameOfSchool}
                     />
                     <div
@@ -164,10 +186,12 @@ const EducationItem = (props) => {
                         }}
                     >
                         <EducationSpecialization
+                            languageContext={languageContext}
                             specialization={props.education.specialization}
                             style={styleContext}
                         />
                         <EducationTimeframe
+                            languageContext={languageContext}
                             yearStarted={props.education.yearStarted}
                             yearEnded={props.education.yearEnded}
                             styleContext={styleContext}

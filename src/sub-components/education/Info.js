@@ -1,8 +1,18 @@
 import * as React from "react"
 import AnimateHeight from "react-animate-height"
 import { IoChevronDown } from "react-icons/io5"
+import { useLanguageContext } from "../../contexts/LanguageProvider"
+
+const text = {
+    header: {
+        en: "Info",
+        fi: "Info",
+    },
+}
 
 const Info = (props) => {
+    const languageContext = useLanguageContext()
+
     const multiplier = props.fontSize.longText * 1.5
     const headerMarginBottom = 5
 
@@ -51,21 +61,7 @@ const Info = (props) => {
         // Un-reveal when switching to another slide
         if (props.currentActiveSlide !== props.index + 1 && revealed)
             setRevealed(false)
-        // Don't execute useEffect's code if user not in the current slide
-        // if (
-        //     props.currentActiveSlide !== props.index + 1 ||
-        //     textOverflow === null
-        // )
-        //     return
-        // console.log(
-        //     "Current slide at index " +
-        //         props.index +
-        //         1 +
-        //         " text content: " +
-        //         document.body.querySelectorAll('[data-testid="info-text"]')[
-        //             props.index + 1
-        //         ].innerText
-        // )
+        if (props.currentActiveSlide !== props.index + 1) return
         checkTextOverflow()
         // eslint-disable-next-line
     }, [props.currentActiveSlide, props.revealed])
@@ -73,14 +69,14 @@ const Info = (props) => {
     const InfoTextContent = () => (
         <p
             data-testid="info-text"
-            className="text-content"
+            className={languageContext.className}
             key={props.info}
             style={{
                 display: "-webkit-box", // Makes ellipsis work
                 WebkitLineClamp: revealed ? 999 : maxTextLines,
                 WebkitBoxOrient: "vertical",
                 height: innerTextHeight,
-                transition: "all 0.5s ease-in-out",
+                // transition: "all 0.5s ease-in-out",
                 maxWidth: `calc(100% - ${
                     props.padding.left + props.padding.right
                 }px)`,
@@ -97,7 +93,7 @@ const Info = (props) => {
                 whiteSpace: "pre-wrap",
             }}
         >
-            {props.info}
+            {props.info[languageContext.language]}
         </p>
     )
 
@@ -126,7 +122,7 @@ const Info = (props) => {
                         paddingRight: props.padding.right,
                     }}
                 >
-                    Info
+                    {text.header[languageContext.language]}
                 </p>
                 {textOverflow && (
                     <IoChevronDown

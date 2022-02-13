@@ -1,6 +1,14 @@
 import * as React from "react"
 import SkillItem from "../sub-components/SkillItem"
 import { useStyleContext } from "../contexts/StyleProvider"
+import { useLanguageContext } from "../contexts/LanguageProvider"
+
+const text = {
+    header: {
+        en: "Skills",
+        fi: "Taidot",
+    },
+}
 
 // https://stackoverflow.com/a/1129270
 function compare(a, b) {
@@ -68,6 +76,7 @@ skillItems.sort(compare)
 
 const Skills = React.forwardRef((props, ref) => {
     const styleContext = useStyleContext()
+    const languageContext = useLanguageContext()
 
     const [enableHighlight, setEnableHighlight] = React.useState(false)
 
@@ -99,6 +108,7 @@ const Skills = React.forwardRef((props, ref) => {
             }}
         >
             <p
+                className={languageContext.className}
                 style={{
                     backgroundColor: enableHighlight
                         ? styleContext.content.title.highlighted.backgroundColor
@@ -107,12 +117,13 @@ const Skills = React.forwardRef((props, ref) => {
                     WebkitTransition: "all .5s ease",
                     MozTransition: "all .5s ease",
                     WebkitAnimationDuration: ".5s",
+                    animationDuration: ".5s",
                     display: "inline-block",
                     padding: 10,
                     borderRadius: 10,
                 }}
             >
-                Skills
+                {text.header[languageContext.language]}
             </p>
             <div>
                 {skillItems.map((skill, index) => (

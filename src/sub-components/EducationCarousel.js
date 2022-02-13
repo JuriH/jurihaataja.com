@@ -11,6 +11,7 @@ import "swiper/css/navigation"
 
 import "./educationCarousel.css"
 
+import { useLanguageContext } from "../contexts/LanguageProvider"
 import { useStyleContext } from "../contexts/StyleProvider"
 
 // import required modules
@@ -37,7 +38,15 @@ const fontSize = {
     longText: 14,
 }
 
+const text = {
+    period: {
+        en: "Period",
+        fi: "Jakso",
+    },
+}
+
 export default function EducationCarousel(props) {
+    const languageContext = useLanguageContext()
     const styleContext = useStyleContext()
 
     const pagination = {
@@ -86,7 +95,6 @@ export default function EducationCarousel(props) {
     return (
         <div style={{ alignItems: "center" }}>
             <Swiper
-                // onSwiper={setSwiper}
                 className="swiper-container"
                 slidesPerView={1}
                 loop={true}
@@ -120,9 +128,6 @@ export default function EducationCarousel(props) {
                                 paddingLeft: 10,
                                 paddingRight: 10,
                             }}
-                            // onClick={() => {
-                            //     props.closeReveal()
-                            // }}
                         >
                             <Header
                                 fontSize={fontSize}
@@ -164,13 +169,14 @@ export default function EducationCarousel(props) {
                 }}
             >
                 <p
+                    className={languageContext.className}
                     style={{
                         margin: 0,
                         marginBottom: 10,
                         color: styleContext.content.text.color,
                     }}
                 >
-                    Period
+                    {text.period[languageContext.language]}
                 </p>
                 <div className="my-custom-pagination-div" />
                 <TranscriptOfRecords />

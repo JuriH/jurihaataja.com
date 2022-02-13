@@ -1,7 +1,17 @@
 import * as React from "react"
+import { useLanguageContext } from "../../contexts/LanguageProvider"
 import getColoredGradeBackground from "../../utils/education/getColoredGradeBackground"
 
+const text = {
+    header: {
+        en: "Grade",
+        fi: "Arvosana",
+    },
+}
+
 export default function Grade(props) {
+    const languageContext = useLanguageContext()
+
     return (
         <div
             style={{
@@ -14,6 +24,7 @@ export default function Grade(props) {
             }}
         >
             <p
+                className={languageContext.className}
                 style={{
                     margin: 0,
                     fontSize: props.fontSize.text,
@@ -21,7 +32,7 @@ export default function Grade(props) {
                     alignSelf: "center",
                 }}
             >
-                Grade
+                {text.header[languageContext.language]}
             </p>
             <p
                 style={{

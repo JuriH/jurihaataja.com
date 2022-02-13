@@ -1,9 +1,17 @@
 import * as React from "react"
 import { IoLink } from "react-icons/io5"
-
+import { useLanguageContext } from "../../contexts/LanguageProvider"
 import { isBrowser } from "react-device-detect"
 
+const text = {
+    transcriptOfRecords: {
+        en: "Transcript of Records",
+        fi: "Opintosuorite",
+    },
+}
+
 export default function TranscriptOfRecords() {
+    const languageContext = useLanguageContext()
     const [pressed, setPressed] = React.useState(false)
     const [mouseHover, setMouseHover] = React.useState(false)
     return (
@@ -56,13 +64,14 @@ export default function TranscriptOfRecords() {
             }}
         >
             <p
+                className={languageContext.className}
                 style={{
                     margin: 0,
                     padding: 5,
                     paddingRight: 10,
                 }}
             >
-                Transcript of Records
+                {text.transcriptOfRecords[languageContext.language]}
             </p>
             <IoLink size={20} />
         </div>

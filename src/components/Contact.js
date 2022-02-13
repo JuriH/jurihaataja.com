@@ -6,6 +6,7 @@ import ProfilePicture from "../sub-components/ProfilePicture"
 import { useStyleContext } from "../contexts/StyleProvider"
 import { useLanguageContext } from "../contexts/LanguageProvider"
 import "../App.css"
+import "./contact.css"
 
 const contactItems = [
     {
@@ -19,6 +20,13 @@ const contactItems = [
         icon: IoCall,
     },
 ]
+
+const text = {
+    header: {
+        en: "Contact",
+        fi: "Yhteystiedot",
+    },
+}
 
 const Contact = React.forwardRef((props, ref) => {
     const languageContext = useLanguageContext()
@@ -44,7 +52,6 @@ const Contact = React.forwardRef((props, ref) => {
             ref={ref}
             style={{
                 marginBottom: 25,
-                // paddingTop: 10, // To compensate with added padding in section title for highlighting effect                paddingBottom: 10,
                 paddingLeft: 15,
                 paddingRight: 15,
                 borderRadius: 10,
@@ -55,22 +62,22 @@ const Contact = React.forwardRef((props, ref) => {
             }}
         >
             <p
+                className={languageContext.className}
                 style={{
                     backgroundColor: enableHighlight
                         ? styleContext.content.title.highlighted.backgroundColor
                         : "transparent",
-                    transition: "all .5s ease",
-                    WebkitTransition: "all .5s ease",
-                    MozTransition: "all .5s ease",
-                    WebkitAnimationDuration: ".5s",
+                    transition: "all .25s ease",
+                    WebkitTransition: "all .25s ease",
+                    MozTransition: "all .25s ease",
+                    WebkitAnimationDuration: ".25s",
                     display: "inline-block",
                     padding: 10,
                     borderRadius: 10,
                     color: styleContext.content.header.color,
                 }}
             >
-                {/* {languageContext === "en" ? "Contact" : "Yhteystiedot"} */}
-                Contact
+                {text.header[languageContext.language]}
             </p>
             <div
                 style={{

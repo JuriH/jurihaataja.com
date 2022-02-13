@@ -5,6 +5,15 @@ import { useStyleContext } from "../contexts/StyleProvider"
 import { FaKeyboard } from "react-icons/fa"
 import { IoChatbubbleEllipses } from "react-icons/io5"
 
+import { useLanguageContext } from "../contexts/LanguageProvider"
+
+const text = {
+    header: {
+        en: "Languages",
+        fi: "Kielet",
+    },
+}
+
 const languageItems = [
     {
         text: "Finnish",
@@ -33,6 +42,7 @@ const languageItems = [
 ]
 
 const Languages = React.forwardRef((props, ref) => {
+    const languageContext = useLanguageContext()
     const styleContext = useStyleContext()
     const [enableHighlight, setEnableHighlight] = React.useState(false)
 
@@ -62,6 +72,7 @@ const Languages = React.forwardRef((props, ref) => {
             }}
         >
             <p
+                className={languageContext.className}
                 style={{
                     backgroundColor: enableHighlight
                         ? styleContext.content.title.highlighted.backgroundColor
@@ -75,7 +86,7 @@ const Languages = React.forwardRef((props, ref) => {
                     borderRadius: 10,
                 }}
             >
-                Languages
+                {text.header[languageContext.language]}
             </p>
             <div style={{ display: "flex", flexDirection: "row" }}>
                 <div style={{ flex: 1 }} />

@@ -1,5 +1,4 @@
 import * as React from "react"
-import { View, TouchableWithoutFeedback, Text } from "react-native"
 
 import "./App.css"
 
@@ -21,9 +20,6 @@ import "react-toastify/dist/ReactToastify.css"
 import { useWindowDimensionsContext } from "./contexts/WindowDimensionsProvider"
 
 import InView from "react-intersection-observer"
-
-const scroll = require("scroll")
-const page = require("scroll-doc")()
 
 function App({ route, navigation }) {
     const [selectedTab, setSelectedTab] = React.useState({

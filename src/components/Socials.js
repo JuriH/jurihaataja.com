@@ -2,6 +2,18 @@ import * as React from "react"
 import SocialItem from "../sub-components/SocialItem"
 import { IoLogoLinkedin, IoLogoGithub } from "react-icons/io5"
 import { useStyleContext } from "../contexts/StyleProvider"
+import { useLanguageContext } from "../contexts/LanguageProvider"
+
+let textFadeOutAnim = null
+let textFadeInAnim = null
+const fadeAnimMs = 250 // Less than 200ms looks buggy
+
+const text = {
+    header: {
+        en: "Socials",
+        fi: "Sosiaaliset",
+    },
+}
 
 const socialItems = [
     {
@@ -15,6 +27,7 @@ const socialItems = [
 ]
 
 const Socials = React.forwardRef((props, ref) => {
+    const languageContext = useLanguageContext()
     const styleContext = useStyleContext()
     const [enableHighlight, setEnableHighlight] = React.useState(false)
 
@@ -45,6 +58,7 @@ const Socials = React.forwardRef((props, ref) => {
         >
             <div>
                 <p
+                    className={languageContext.className}
                     style={{
                         backgroundColor: enableHighlight
                             ? styleContext.content.title.highlighted
@@ -59,7 +73,7 @@ const Socials = React.forwardRef((props, ref) => {
                         borderRadius: 10,
                     }}
                 >
-                    Socials
+                    {text.header[languageContext.language]}
                 </p>
                 <div
                     style={{

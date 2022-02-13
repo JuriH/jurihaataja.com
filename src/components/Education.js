@@ -1,10 +1,19 @@
 import * as React from "react"
 import { useStyleContext } from "../contexts/StyleProvider"
+import { useLanguageContext } from "../contexts/LanguageProvider"
 import EducationItem from "../sub-components/EducationItem"
 
 import { educations } from "../resources/educations"
 
+const text = {
+    header: {
+        en: "Education",
+        fi: "Koulutus",
+    },
+}
+
 const Education = React.forwardRef((props, ref) => {
+    const languageContext = useLanguageContext()
     const styleContext = useStyleContext()
 
     const [enableHighlight, setEnableHighlight] = React.useState(false)
@@ -35,6 +44,7 @@ const Education = React.forwardRef((props, ref) => {
             }}
         >
             <p
+                className={languageContext.className}
                 style={{
                     backgroundColor: enableHighlight
                         ? styleContext.content.title.highlighted.backgroundColor
@@ -49,7 +59,7 @@ const Education = React.forwardRef((props, ref) => {
                     color: styleContext.content.header.color,
                 }}
             >
-                Education
+                {text.header[languageContext.language]}
             </p>
             {educations.map((education, index) => (
                 <EducationItem
@@ -57,12 +67,6 @@ const Education = React.forwardRef((props, ref) => {
                     education={education}
                     topBarBottomMargin={props.topBarBottomMargin}
                 />
-                // <div
-                //     state={{ pageYOffset: window.pageYOffset }}
-                //     style={{ padding: 10, backgroundColor: "yellow" }}
-                // >
-                //     <p>{education.nameOfSchool.short}</p>
-                // </div>
             ))}
         </div>
     )

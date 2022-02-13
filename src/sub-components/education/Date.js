@@ -1,7 +1,17 @@
 import * as React from "react"
 import monthNumberToString from "../../utils/monthNumberToString"
+import { useLanguageContext } from "../../contexts/LanguageProvider"
+
+const text = {
+    header: {
+        en: "Date",
+        fi: "Päivämäärä",
+    },
+}
 
 export default function Date(props) {
+    const languageContext = useLanguageContext()
+
     return (
         <div
             style={{
@@ -17,6 +27,7 @@ export default function Date(props) {
             }}
         >
             <p
+                className={languageContext.className}
                 style={{
                     margin: 0,
                     fontSize: props.fontSize.text,
@@ -24,16 +35,20 @@ export default function Date(props) {
                     alignSelf: "flex-start",
                 }}
             >
-                Date
+                {text.header[languageContext.language]}
             </p>
             <p
+                className={languageContext.className}
                 style={{
                     margin: 0,
                     fontSize: props.fontSize.text,
                     color: props.style.content.text.color,
                 }}
             >
-                {monthNumberToString(props.date.getMonth()) +
+                {monthNumberToString(
+                    props.date.getMonth(),
+                    languageContext.language
+                ) +
                     " - " +
                     props.date.getFullYear()}
             </p>

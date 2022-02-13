@@ -1,8 +1,8 @@
 import * as React from "react"
+import "../App.css"
 import "./topBar.css"
-import { useStyleContext } from "../contexts/StyleProvider"
-
-// import LanguageSwitcher from "../sub-components/LanguageSwitcher"
+import LanguageSelector from "./LanguageSelector"
+import { useLanguageContext } from "../contexts/LanguageProvider"
 
 // Support animated scrolling on Safari as well
 const scroll = require("scroll")
@@ -10,39 +10,58 @@ const page = require("scroll-doc")()
 
 const tabItems = [
     {
-        name: "Contact",
+        name: {
+            en: "Contact",
+            fi: "Yhteystiedot",
+        },
         ref: "contactRef",
     },
     {
-        name: "Bio",
+        name: {
+            en: "Bio",
+            fi: "Bio",
+        },
         ref: "bioRef",
     },
     {
-        name: "Education",
+        name: {
+            en: "Education",
+            fi: "Koulutus",
+        },
         ref: "educationRef",
     },
     {
-        name: "Skills",
+        name: {
+            en: "Skills",
+            fi: "Taidot",
+        },
         ref: "skillRef",
     },
     {
-        name: "Socials",
+        name: {
+            en: "Socials",
+            fi: "Sosiaaliset",
+        },
         ref: "socialRef",
     },
     {
-        name: "Languages",
+        name: {
+            en: "Languages",
+            fi: "Kielet",
+        },
         ref: "languageRef",
     },
 ]
 
 export default function TopBar(props) {
+    const languageContext = useLanguageContext()
+    // console.log(languageContext.language)
+
     const [topBarOffsetY, setTopBarOffsetY] = React.useState(null)
     React.useEffect(() => {
         topBarOffsetY !== null &&
             props.callbackHeight(topBarRef.current.clientHeight)
     }, [topBarOffsetY])
-
-    // const [scrollingInProgress, setScrollingInProgress] = React.useState(false)
 
     const [targetSection, setTargetSection] = React.useState(null)
     React.useEffect(() => {
@@ -56,9 +75,9 @@ export default function TopBar(props) {
         millis: null,
     })
 
-    React.useEffect(() => {
-        // console.log("Selected tab: " + selectedTab.name)
-    }, [selectedTab])
+    // React.useEffect(() => {
+    //     console.log("Selected tab: " + selectedTab.name)
+    // }, [selectedTab])
 
     React.useEffect(() => {
         if (
@@ -68,7 +87,7 @@ export default function TopBar(props) {
         ) {
             scroll.top(
                 page,
-                tabItems[0].name === selectedTab.name
+                tabItems[0].name.en === selectedTab.name
                     ? 0
                     : props.refs[selectedTab.ref].current.offsetTop -
                           topBarOffsetY,
@@ -90,14 +109,6 @@ export default function TopBar(props) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.refs.contact])
 
-    // React.useEffect(() => {
-    //     // console.log("Scrolling in progress: " + scrollingInProgress)
-    // }, [scrollingInProgress])
-
-    // const [mouseEnterTab, setMouseEnterTab] = React.useState(null)
-    // React.useEffect(() => {
-    //     // console.log("Mouse enter tab: " + mouseEnterTab)
-    // }, [mouseEnterTab])
     React.useEffect(() => {
         // // console.log("topBarOffsetY: " + topBarOffsetY)
         props.callbackHeight(topBarOffsetY)
@@ -111,10 +122,6 @@ export default function TopBar(props) {
     }, [topBarRef])
 
     React.useEffect(() => {
-        // if (props.activeSections.includes(targetSection)) {
-        //     // console.log("Target section reached")
-        //     setTargetSection(null)
-        // }
         if (props.activeSections.includes(targetSection)) {
             // console.log("Selected tab included in Active Sections")
             setTargetSection(null)
@@ -165,7 +172,7 @@ export default function TopBar(props) {
                             setTargetSection(tab.name)
                             setSelectedTab({
                                 ...selectedTab,
-                                name: tab.name,
+                                name: tab.name.en,
                                 ref: tab.ref,
                                 millis: new Date(),
                             })
@@ -179,13 +186,14 @@ export default function TopBar(props) {
                         }}
                     >
                         <p
+                            className={"animate-language"}
                             style={{
                                 fontSize: 14,
                                 backgroundColor:
-                                    selectedTab.name === tab.name
+                                    selectedTab.name === tab.name.en
                                         ? "#ccdbfd"
                                         : props.activeSections.includes(
-                                              tab.name
+                                              tab.name.en
                                           )
                                         ? "#e2eafcBF"
                                         : "transparent",
@@ -196,38 +204,13 @@ export default function TopBar(props) {
                                 MozTransition: "all .5s ease",
                                 margin: 0,
                             }}
-                            // onMouseEnter={() => {
-                            //     mouseEnterTab !== tab.name &&
-                            //         setMouseEnterTab(tab.name)
-                            // }}
-                            // onMouseLeave={() => {
-                            //     mouseEnterTab === tab.name &&
-                            //         setMouseEnterTab(null)
-                            // }}
-                            // onTouchStart={() => {
-                            //     mouseEnterTab !== tab.name &&
-                            //         setMouseEnterTab(tab.name)
-                            // }}
-                            // onTouchEnd={() => {
-                            //     mouseEnterTab === tab.name &&
-                            //         setMouseEnterTab(null)
-                            // }}
                         >
-                            {tab.name}
+                            {tab.name[languageContext.language]}
                         </p>
                     </div>
                 )
             })}
-            {/* <div
-                style={{
-                    position: "fixed",
-                    top: window.innerHeight / 2,
-                    backgroundColor: "red",
-                    height: 1,
-                    width: "100vw",
-                }}
-            ></div> */}
-            {/* <LanguageSwitcher /> */}
+            <LanguageSelector />
         </div>
     )
 }
