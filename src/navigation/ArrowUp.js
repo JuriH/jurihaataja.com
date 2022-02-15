@@ -1,5 +1,6 @@
 import * as React from "react"
 import { IoArrowUpOutline } from "react-icons/io5"
+import "./arrowUp.css"
 
 import { isBrowser, isMobile } from "react-device-detect"
 
@@ -42,18 +43,22 @@ export default function ArrowUp(props) {
             }}
         >
             <div
+                className="arrow-up-icon-container"
                 style={{
                     display: "flex",
                     flex: 1,
                     width: 50,
                     height: 50,
-                    backgroundColor: "#495057",
+                    backgroundColor: "#343a40e6",
                     cursor: "pointer",
                     borderRadius: 50,
                     alignItems: "center",
                     justifyContent: "center",
                     border: "1px solid #ffffff",
-                    opacity: 0.9,
+                    cursor: arrowVisible ? "pointer" : "default",
+                    transition: "all .25s ease",
+                    WebkitTransition: "all .25s ease",
+                    MozTransition: "all .25s ease",
                     cursor: arrowVisible ? "pointer" : "default",
                 }}
             >

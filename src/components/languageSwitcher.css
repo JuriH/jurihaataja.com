@@ -5,7 +5,7 @@
     }
 
     .language-switcher-container:hover {
-        background-color: #b6ccfebf !important;
+        background-color: #abc4ffbf !important;
         transition: all 0.25s ease;
         -webkit-transition: all 0.25s ease;
         -moz-transition: all 0.25s ease;

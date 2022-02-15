@@ -1,0 +1,11 @@
+/** Apply effect only for mouse */
+@media only screen and (min-width: 450px) {
+    .arrow-up-icon-container:hover {
+        background-color: #212529e6 !important;
+        transition: all 0.25s ease;
+        -webkit-transition: all 0.25s ease;
+        -moz-transition: all 0.25s ease;
+        -webkit-animation-duration: 0.25s;
+        animation-duration: 0.25s;
+    }
+}
