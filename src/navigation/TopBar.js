@@ -1,7 +1,6 @@
 import * as React from "react"
 import "../App.css"
 import "./topBar.css"
-import LanguageSelector from "./LanguageSelector"
 import { useLanguageContext } from "../contexts/LanguageProvider"
 
 // Support animated scrolling on Safari as well
@@ -163,7 +162,6 @@ export default function TopBar(props) {
                 WebkitTapHighlightColor: "rgba(0,0,0,0)", // Fixes flickering on tap on Safari iOS
             }}
         >
-            {/* <LanguageSelector /> */}
             {tabItems.map((tab, index) => {
                 return (
                     <div

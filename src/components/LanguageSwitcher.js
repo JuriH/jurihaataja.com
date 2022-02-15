@@ -1,13 +1,25 @@
 import * as React from "react"
-import "./languageSwitcher.css"
 import { useLanguageContext } from "../contexts/LanguageProvider"
 import AnimateHeight from "react-animate-height"
+import { isBrowser } from "react-device-detect"
 
 const options = ["en", "fi"]
 let currentOptions = []
 
 export default function LanguageSwitcher() {
     const languageContext = useLanguageContext()
+
+    const [mouseHoverLanguageSwitcher, setMouseHoverLanguageSwitcher] =
+        React.useState(false)
+
+    const [mouseHoverLanguageItem, setMouseHoverLanguageItem] =
+        React.useState(null)
+    React.useEffect(() => {
+        mouseHoverLanguageItem !== null && setMouseHoverLanguageSwitcher(false)
+    }, [mouseHoverLanguageItem])
+
+    const [animatedHeightAnimComplete, setAnimatedHeightanimComplete] =
+        React.useState(null)
 
     let timeout = null
     const [
@@ -27,14 +39,36 @@ export default function LanguageSwitcher() {
     }, [selectedLanguage])
 
     const [revealed, setRevealed] = React.useState(false)
-    // React.useEffect(() => {
-    //     console.log("Revealed: " + revealed)
-    // }, [revealed])
+    React.useEffect(() => {
+        console.log("Revealed: " + revealed)
+        setAnimatedHeightanimComplete(false)
+    }, [revealed])
 
     React.useEffect(() => {
         if (selectedLanguage === languageContext) return
         setSelectedLanguage(languageContext.language)
     }, [languageContext.language])
+
+    function test(e) {
+        try {
+            if (!e.target.className.startsWith("language-switcher"))
+                setRevealed(false)
+        } catch (err) {
+            setRevealed(false)
+        }
+    }
+
+    React.useEffect(() => {
+        document.body.addEventListener("click", (e) => {
+            test(e)
+        })
+        return () => {
+            document.body.removeEventListener("click", (e) => {
+                test(e)
+            })
+        }
+    }, [])
+
     return (
         // <div
         //     className="language-switcher-container"
@@ -128,7 +162,9 @@ export default function LanguageSwitcher() {
                 width: 50,
                 minHeight: 50,
                 borderRadius: 50,
-                backgroundColor: "#c1d3feBF",
+                backgroundColor: mouseHoverLanguageSwitcher
+                    ? "#abc4ffbf"
+                    : "#c1d3feBF",
                 border: "1px solid #ffffff",
                 marginTop: 10,
                 transition: "all 0.25s ease",
@@ -136,10 +172,23 @@ export default function LanguageSwitcher() {
                 WebkitAnimationDuration: "0.25s",
                 animationDuration: "0.25s",
             }}
+            onMouseEnter={() => {
+                isBrowser && setMouseHoverLanguageSwitcher(true)
+            }}
+            onMouseMove={() => {
+                isBrowser &&
+                    mouseHoverLanguageItem === null &&
+                    setMouseHoverLanguageSwitcher(true)
+            }}
+            onMouseLeave={() => {
+                isBrowser && setMouseHoverLanguageSwitcher(false)
+            }}
         >
             <div
+                className="language-switcher-revealer"
                 style={{
-                    zIndex: 1002,
+                    zIndex:
+                        revealed && animatedHeightAnimComplete ? 1004 : 1002,
                     width: 50,
                     minHeight: 0,
                     borderRadius: 50,
@@ -149,12 +198,16 @@ export default function LanguageSwitcher() {
                 }}
             >
                 <AnimateHeight
+                    className="language-switcher-animateHeight"
                     duration={300}
                     height={revealed ? "auto" : 0}
-                    onAnimationEnd={() => {}}
+                    onAnimationEnd={() => {
+                        setAnimatedHeightanimComplete(true)
+                    }}
                 >
-                    {currentOptions.map((option) => (
+                    {currentOptions.map((option, index) => (
                         <div
+                            className="language-switcher-option-container"
                             style={{ cursor: "pointer" }}
                             key={"languageOption-" + option}
                             onClick={() => {
@@ -164,9 +217,15 @@ export default function LanguageSwitcher() {
                                     languageContext.setLanguage(option)
                                 }
                             }}
+                            onMouseEnter={() => {
+                                isBrowser && setMouseHoverLanguageItem(index)
+                            }}
+                            onMouseLeave={() => {
+                                isBrowser && setMouseHoverLanguageItem(null)
+                            }}
                         >
                             <p
-                                className={"language-switcher-option"}
+                                className={"language-switcher-option-text"}
                                 style={{
                                     width: 50,
                                     height: 50,
@@ -174,7 +233,14 @@ export default function LanguageSwitcher() {
                                     verticalAlign: "middle", // To center text
                                     display: "table-cell", // To center text
                                     borderRadius: 50,
-                                    backgroundColor: "#edf2fbBF",
+                                    backgroundColor:
+                                        mouseHoverLanguageItem === index
+                                            ? "#b6ccfebf"
+                                            : "#edf2fbBF",
+                                    transition: "all 0.25s ease",
+                                    WebkitTransition: "all 0.25s ease",
+                                    WebkitAnimationDuration: "0.25s",
+                                    animationDuration: "0.25s",
                                 }}
                             >
                                 {option.toUpperCase()}
@@ -184,6 +250,7 @@ export default function LanguageSwitcher() {
                 </AnimateHeight>
             </div>
             <div
+                className="language-switcher-selected-language-container"
                 style={{
                     zIndex: 1003,
                     cursor: "pointer",
@@ -198,6 +265,7 @@ export default function LanguageSwitcher() {
                 }}
             >
                 <p
+                    className="language-switcher-selected-language-text"
                     style={{
                         width: 50,
                         textAlign: "center",
