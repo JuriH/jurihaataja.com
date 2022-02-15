@@ -1,4 +1,8 @@
+import * as React from "react"
+import { useLanguageContext } from "../../contexts/LanguageProvider"
+
 export default function Header(props) {
+    const languageContext = useLanguageContext()
     return (
         <div
             style={{
@@ -10,6 +14,7 @@ export default function Header(props) {
             }}
         >
             <p
+                className={languageContext.className}
                 style={{
                     fontSize: props.fontSize.mainHeader,
                     color: props.style.content.header.color,
@@ -17,7 +22,7 @@ export default function Header(props) {
                     textOverflow: "ellipsis",
                 }}
             >
-                {props.period}
+                {props.period[languageContext.language]}
             </p>
         </div>
     )

@@ -1,8 +1,8 @@
 import * as React from "react"
-import calculateAspectRatioFit from "../utils/calculateAspectRatio"
+import calculateAspectRatioFit from "../../utils/calculateAspectRatio"
 import "./languageItem.css"
 
-import { useLanguageContext } from "../contexts/LanguageProvider"
+import { useLanguageContext } from "../../contexts/LanguageProvider"
 
 const text = {
     language: {
@@ -97,7 +97,7 @@ export default function LanguageItem(props) {
                     <p
                         className={languageContext.className}
                         key={"languageItem" + index}
-                        style={{ flex: 1, textAlign: "center" }}
+                        style={{ flex: 1, textAlign: "center", fontSize: 14 }} // Set to 14 to add spacing on mobile
                     >
                         {
                             text.rating[props.rating[item].toLowerCase()][

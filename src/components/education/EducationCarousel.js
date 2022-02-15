@@ -11,19 +11,19 @@ import "swiper/css/navigation"
 
 import "./educationCarousel.css"
 
-import { useLanguageContext } from "../contexts/LanguageProvider"
-import { useStyleContext } from "../contexts/StyleProvider"
+import { useLanguageContext } from "../../contexts/LanguageProvider"
+import { useStyleContext } from "../../contexts/StyleProvider"
 
 // import required modules
 import { Pagination, Keyboard } from "swiper"
 
-import Header from "../sub-components/education/Header"
-import Grade from "../sub-components/education/Grade"
-import Info from "../sub-components/education/Info"
-import Date from "../sub-components/education/Date"
-import TranscriptOfRecords from "./education/TranscriptOfRecords"
+import Header from "./Header"
+import Grade from "./Grade"
+import Info from "./Info"
+import Date from "./Date"
+import TranscriptOfRecords from "./TranscriptOfRecords"
 
-import getColoredGradeBackground from "../utils/education/getColoredGradeBackground"
+import getColoredGradeBackground from "../../utils/education/getColoredGradeBackground"
 
 const containerHeightPx = 300
 

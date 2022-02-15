@@ -1,12 +1,8 @@
 import * as React from "react"
-import SocialItem from "../sub-components/SocialItem"
+import SocialItem from "./SocialItem"
 import { IoLogoLinkedin, IoLogoGithub } from "react-icons/io5"
-import { useStyleContext } from "../contexts/StyleProvider"
-import { useLanguageContext } from "../contexts/LanguageProvider"
-
-let textFadeOutAnim = null
-let textFadeInAnim = null
-const fadeAnimMs = 250 // Less than 200ms looks buggy
+import { useStyleContext } from "../../contexts/StyleProvider"
+import { useLanguageContext } from "../../contexts/LanguageProvider"
 
 const text = {
     header: {

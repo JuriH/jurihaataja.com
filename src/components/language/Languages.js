@@ -1,11 +1,11 @@
 import * as React from "react"
-import LanguageItem from "../sub-components/LanguageItem"
-import { useStyleContext } from "../contexts/StyleProvider"
+import LanguageItem from "./LanguageItem"
+import { useStyleContext } from "../../contexts/StyleProvider"
 
 import { FaKeyboard } from "react-icons/fa"
 import { IoChatbubbleEllipses } from "react-icons/io5"
 
-import { useLanguageContext } from "../contexts/LanguageProvider"
+import { useLanguageContext } from "../../contexts/LanguageProvider"
 
 const text = {
     header: {

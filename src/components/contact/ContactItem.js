@@ -2,7 +2,7 @@ import * as React from "react"
 import { CopyToClipboard } from "react-copy-to-clipboard"
 import { toast } from "react-toastify"
 import { IoCopy } from "react-icons/io5"
-import { useStyleContext } from "../contexts/StyleProvider"
+import { useStyleContext } from "../../contexts/StyleProvider"
 
 function getTypeToastMessage(type) {
     switch (type) {

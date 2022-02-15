@@ -75,9 +75,9 @@ export default function TopBar(props) {
         millis: null,
     })
 
-    // React.useEffect(() => {
-    //     console.log("Selected tab: " + selectedTab.name)
-    // }, [selectedTab])
+    React.useEffect(() => {
+        console.log("Selected tab: " + selectedTab.name)
+    }, [selectedTab])
 
     React.useEffect(() => {
         if (
@@ -130,7 +130,7 @@ export default function TopBar(props) {
             targetSection === null &&
             !props.activeSections.includes(selectedTab.name)
         ) {
-            // console.log("Selected tab not included in Active Sections")
+            console.log("Selected tab not included in Active Sections")
             setSelectedTab({
                 ...selectedTab,
                 name: null,
@@ -157,11 +157,13 @@ export default function TopBar(props) {
                 width: "100vw",
                 backgroundColor: "#ffffff",
                 boxShadow: "0px 1px 10px 0px #dee2e6",
-                paddingTop: 10,
-                paddingBottom: 5,
+                // paddingLeft: 10,
+                paddingTop: 5,
+                // paddingBottom: 5,
                 WebkitTapHighlightColor: "rgba(0,0,0,0)", // Fixes flickering on tap on Safari iOS
             }}
         >
+            {/* <LanguageSelector /> */}
             {tabItems.map((tab, index) => {
                 return (
                     <div
@@ -169,7 +171,7 @@ export default function TopBar(props) {
                         key={"topBarItem" + index}
                         onClick={() => {
                             // console.log("Clicked tab: " + tab.name)
-                            setTargetSection(tab.name)
+                            setTargetSection(tab.name.en)
                             setSelectedTab({
                                 ...selectedTab,
                                 name: tab.name.en,
@@ -178,6 +180,7 @@ export default function TopBar(props) {
                             })
                         }}
                         style={{
+                            justifyContent: "flex-start",
                             cursor: "pointer",
                             display: "inline-block",
                             marginLeft: 10,
@@ -210,7 +213,6 @@ export default function TopBar(props) {
                     </div>
                 )
             })}
-            <LanguageSelector />
         </div>
     )
 }

@@ -1,10 +1,16 @@
 import * as React from "react"
 import { IoArrowUpOutline } from "react-icons/io5"
+
+import { isBrowser, isMobile } from "react-device-detect"
+
 const scroll = require("scroll")
 const page = require("scroll-doc")()
 
 export default function ArrowUp(props) {
     const [arrowVisible, setArrowVisible] = React.useState(false)
+    React.useEffect(() => {
+        console.log("Arrow visible: " + arrowVisible)
+    }, [arrowVisible])
 
     React.useEffect(() => {
         if (props.offsetTop >= props.triggerOffset && !arrowVisible) {
@@ -20,17 +26,19 @@ export default function ArrowUp(props) {
 
     return (
         <div
+            className="arrow-up-container"
             style={{
-                zIndex: 1000,
-                position: "fixed",
-                right: 0,
-                bottom: 0,
-                paddingBottom: "5vw",
-                padding: "3.5vw",
+                // zIndex: 1000,
+                // position: "fixed",
+                // right: 0,
+                // bottom: 0,
+                // paddingBottom: "5vw",
+                // padding: "3.5vw",
                 opacity: arrowVisible ? 1.0 : 0.0,
                 transition: "all .4s ease",
                 WebkitTransition: "all .4s ease",
                 MozTransition: "all .4s ease",
+                cursor: arrowVisible ? "pointer" : "default",
             }}
         >
             <div
@@ -44,8 +52,9 @@ export default function ArrowUp(props) {
                     borderRadius: 50,
                     alignItems: "center",
                     justifyContent: "center",
-                    border: "1px solid rgb(255, 255, 255)",
+                    border: "1px solid #ffffff",
                     opacity: 0.9,
+                    cursor: arrowVisible ? "pointer" : "default",
                 }}
             >
                 <IoArrowUpOutline
@@ -54,7 +63,8 @@ export default function ArrowUp(props) {
                     }}
                     size={35}
                     onClick={() => {
-                        scroll.top(page, 0, (err, scrollTop) => {})
+                        arrowVisible &&
+                            scroll.top(page, 0, (err, scrollTop) => {})
                     }}
                 />
             </div>

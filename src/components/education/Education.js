@@ -1,9 +1,9 @@
 import * as React from "react"
-import { useStyleContext } from "../contexts/StyleProvider"
-import { useLanguageContext } from "../contexts/LanguageProvider"
-import EducationItem from "../sub-components/EducationItem"
+import { useStyleContext } from "../../contexts/StyleProvider"
+import { useLanguageContext } from "../../contexts/LanguageProvider"
+import EducationItem from "./EducationItem"
 
-import { educations } from "../resources/educations"
+import { educations } from "../../resources/educations"
 
 const text = {
     header: {

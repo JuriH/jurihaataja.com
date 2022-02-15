@@ -1,7 +1,7 @@
 import * as React from "react"
-import { useStyleContext } from "../contexts/StyleProvider"
-import { useLanguageContext } from "../contexts/LanguageProvider"
-import "./bio.css"
+import { useStyleContext } from "../../contexts/StyleProvider"
+import { useLanguageContext } from "../../contexts/LanguageProvider"
+// import "./bio.css"
 
 const text = {
     header: {

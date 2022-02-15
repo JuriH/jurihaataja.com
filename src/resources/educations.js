@@ -15,7 +15,10 @@ let educations = [
         },
         periods: [
             {
-                period: "Product Design and Implementation",
+                period: {
+                    en: "Product Design and Implementation",
+                    fi: "Tuotesuunnittelu ja toteutus",
+                },
                 grade: 5,
                 info: {
                     en: "Developed a Proof-of-Concept marketplace app for both Android and iOS with React Native.\nIt uses Google's Firebase for authentication and Firestore as database. REST API is implemented with Firebase Functions.",
@@ -24,7 +27,10 @@ let educations = [
                 date: new Date("2021-12-22"),
             },
             {
-                period: "Advanced Studies of Software Development",
+                period: {
+                    en: "Advanced Studies of Software Development",
+                    fi: "Vaativammat sovelluskehityksen opinnot",
+                },
                 grade: 5,
                 info: {
                     en: "Studied iOS programming with Swift, analyzed HTTP-traffic with Wireshark and got familiar with Amazon Web Services (AWS) as well as basic Linux terminal commands.",
@@ -33,7 +39,10 @@ let educations = [
                 date: new Date("2021-11-05"),
             },
             {
-                period: "Professional Practical Training 2",
+                period: {
+                    en: "Professional Practical Training 2",
+                    fi: "Ammattiharjoittelu 2",
+                },
                 grade: null,
                 info: {
                     en: "Developed a Twitter-bot with Node.js and Puppeteer-library for liking and sharing tweets that were related to cryptocurrency projects that I was invested in.",
@@ -42,7 +51,10 @@ let educations = [
                 date: new Date("2021-10-31"),
             },
             {
-                period: "Mobile Application Development Project",
+                period: {
+                    en: "Mobile Application Development Project",
+                    fi: "Mobiilisovellusten kehitysprojekti",
+                },
                 grade: 5,
                 info: {
                     en: "Developed a cryptocurrency price-tracking application for Android, where user could find trackable cryptocurrencies through Binance's API.",
@@ -51,7 +63,10 @@ let educations = [
                 date: new Date("2021-05-23"),
             },
             {
-                period: "Mobile Programming",
+                period: {
+                    en: "Mobile Programming",
+                    fi: "Mobiiliohjelmointi",
+                },
                 grade: 5,
                 info: {
                     en: "Studied Java (Android) programming.",
@@ -60,7 +75,10 @@ let educations = [
                 date: new Date("2021-03-29"),
             },
             {
-                period: "Embedded System Application Project",
+                period: {
+                    en: "Embedded System Application Project",
+                    fi: "Sulautetun järjestelmän sovellusprojekti",
+                },
                 grade: 5,
                 info: {
                     en: "Developed a webpage with HTML, CSS and JavaScript for a Unity-based flight simulator.\nUsers could apply temporary effects to a simulator instance through the webpage, for example changing the in-game weather or applying a buff or nerf to the airplane.",
@@ -69,7 +87,10 @@ let educations = [
                 date: new Date("2021-01-18"),
             },
             {
-                period: "Personal Practical Training 1",
+                period: {
+                    en: "Professional Practical Training 1",
+                    fi: "Ammattiharjoittelu 1",
+                },
                 grade: null,
                 info: {
                     en: "Developed an Android application for creating and filling-out surveys that never got even close to its pilot-version nor saw the daylight.",
@@ -78,7 +99,10 @@ let educations = [
                 date: new Date("2020-12-21"),
             },
             {
-                period: "Application Development",
+                period: {
+                    en: "Application Development",
+                    fi: "Sovelluskehitys",
+                },
                 grade: 5,
                 info: {
                     en: "Physics, entrepreneurship, Windows Forms and JavaFX.",
@@ -87,7 +111,10 @@ let educations = [
                 date: new Date("2020-11-13"),
             },
             {
-                period: "Software Development Application Project",
+                period: {
+                    en: "Software Development Application Project",
+                    fi: "Ohjelmistokehityksen sovellusprojekti",
+                },
                 grade: 4,
                 info: {
                     en: "Developed a Proof-of-Concept fullstack banking application with C#, PHP REST API and MySQL-database.",
@@ -96,7 +123,10 @@ let educations = [
                 date: new Date("2020-05-12"),
             },
             {
-                period: "Basics of Software Development",
+                period: {
+                    en: "Basics of Software Development",
+                    fi: "Ohjelmistokehityksen perusteet",
+                },
                 grade: 5,
                 info: {
                     en: "C# was added to studied programming languages along with C++.",
@@ -105,7 +135,10 @@ let educations = [
                 date: new Date("2020-03-16"),
             },
             {
-                period: "IT Application Project",
+                period: {
+                    en: "IT Application Project",
+                    fi: "Tietotekniikan sovellusprojekti",
+                },
                 grade: 4,
                 info: {
                     en: "Created a controller with Arduino and distance sensors that could be used for example to control Youtube or Spotify (Web Player) playback.",
@@ -114,7 +147,10 @@ let educations = [
                 date: new Date("2020-01-21"),
             },
             {
-                period: "Introduction to ICT Studies",
+                period: {
+                    en: "Introduction to ICT Studies",
+                    fi: "Johdatus tietotekniikan opintoihin",
+                },
                 grade: 4,
                 info: {
                     en: "Basics of C++ with console/terminal application, electric circuity and resistor calculations.",

@@ -3,14 +3,16 @@ import * as React from "react"
 import "./App.css"
 
 import TopBar from "./navigation/TopBar"
-import Contact from "./components/Contact"
-import Bio from "./components/Bio"
-import Education from "./components/Education"
-import Skills from "./components/Skills"
-import Socials from "./components/Socials"
-import Languages from "./components/Languages"
+import Contact from "./components/contact/Contact"
+import Bio from "./components/bio/Bio"
+import Education from "./components/education/Education"
+import Skills from "./components/skill/Skills"
+import Socials from "./components/social/Socials"
+import Languages from "./components/language/Languages"
 
-import ArrowUp from "./components/ArrowUp"
+// Floating elements
+import ArrowUp from "./navigation/ArrowUp"
+import LanguageSwitcher from "./components/LanguageSwitcher"
 
 import Footer from "./components/Footer"
 
@@ -20,6 +22,7 @@ import "react-toastify/dist/ReactToastify.css"
 import { useWindowDimensionsContext } from "./contexts/WindowDimensionsProvider"
 
 import InView from "react-intersection-observer"
+import { isBrowser } from "react-device-detect"
 
 function App({ route, navigation }) {
     const [selectedTab, setSelectedTab] = React.useState({
@@ -50,7 +53,7 @@ function App({ route, navigation }) {
 
     const [activeSections, setActiveSections] = React.useState([])
     React.useEffect(() => {
-        // console.log("Active sections: " + JSON.stringify(activeSections))
+        console.log("Active sections: " + JSON.stringify(activeSections))
     }, [activeSections])
 
     function addToActiveSectionArr(toAdd) {
@@ -281,7 +284,22 @@ function App({ route, navigation }) {
                 />
             </InView>
             <Footer />
-            <ArrowUp offsetTop={offsetTop} triggerOffset={100} />
+
+            <div
+                style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    zIndex: 1000,
+                    position: "fixed",
+                    right: 0,
+                    bottom: 0,
+                    paddingBottom: "5vw",
+                    padding: "3.5vw",
+                }}
+            >
+                <ArrowUp offsetTop={offsetTop} triggerOffset={100} />
+                <LanguageSwitcher />
+            </div>
         </div>
     )
 }

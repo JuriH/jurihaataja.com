@@ -64,7 +64,12 @@ const Info = (props) => {
         if (props.currentActiveSlide !== props.index + 1) return
         checkTextOverflow()
         // eslint-disable-next-line
-    }, [props.currentActiveSlide, props.revealed])
+    }, [props.currentActiveSlide, props.revealed, languageContext.language])
+
+    // Un-reveal Info-container on language change
+    React.useEffect(() => {
+        revealed && setRevealed(false)
+    }, [languageContext.language])
 
     const InfoTextContent = () => (
         <p

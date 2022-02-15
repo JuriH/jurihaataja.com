@@ -1,7 +1,0 @@
-.bio-item {
-    transition: all 0.25s ease;
-    -webkit-transition: all 0.25s ease;
-    -moz-transition: all 0.25s ease;
-    -webkit-animation-duration: 25s;
-    animation-duration: 25s;
-}

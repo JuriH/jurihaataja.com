@@ -1,13 +1,13 @@
 import * as React from "react"
 import { IoChevronDown } from "react-icons/io5"
-import { useLanguageContext } from "../contexts/LanguageProvider"
-import { useStyleContext } from "../contexts/StyleProvider"
+import { useLanguageContext } from "../../contexts/LanguageProvider"
+import { useStyleContext } from "../../contexts/StyleProvider"
 import "./educationItem.css"
 
 import AnimateHeight from "react-animate-height"
 import EducationCarousel from "./EducationCarousel"
 
-import { educations } from "../resources/educations"
+import { educations } from "../../resources/educations"
 
 import { isBrowser } from "react-device-detect"
 
@@ -68,6 +68,7 @@ const EducationSpecialization = (props) => (
     <p
         className={props.languageContext.className}
         style={{
+            textAlign: "start",
             marginTop: 0,
             marginBottom: 10,
             color: props.style.content.text.color,
@@ -208,7 +209,7 @@ const EducationItem = (props) => {
                     <RevealIcon iconPadding={iconPadding} revealed={revealed} />
                 </div>
             </div>
-            <AnimateHeight duration={250} height={revealed ? "auto" : 0}>
+            <AnimateHeight duration={300} height={revealed ? "auto" : 0}>
                 {educations.map((education) => (
                     <EducationCarousel
                         parentWidth={parentWidth}

@@ -1,5 +1,5 @@
-import calculateAspectRatioFit from "../utils/calculateAspectRatio"
-import profilePicture from "../assets/profilePicture.png"
+import calculateAspectRatioFit from "../../utils/calculateAspectRatio"
+import profilePicture from "../../assets/profilePicture.png"
 
 export default function ProfilePicture() {
     const keepAspectRatioSize = calculateAspectRatioFit(472, 529, 150, 150)

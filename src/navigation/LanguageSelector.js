@@ -3,7 +3,7 @@ import Dropdown from "react-dropdown"
 import { useLanguageContext } from "../contexts/LanguageProvider"
 import "./languageSelector.css"
 
-const options = ["fi", "en"]
+let options = ["fi", "en"]
 
 function getLanguage() {
     let lang = navigator.language || navigator.userLanguage
@@ -18,22 +18,39 @@ export default function LanguageSwitcher() {
     const languageContext = useLanguageContext()
 
     const [defaultOption, setDefaultOption] = React.useState(
-        languageContext.language
+        options.find((item) => item.value === languageContext.language).value
     )
+    React.useEffect(() => {
+        let optionsCopy = Array.from(options)
 
-    // React.useEffect(() => {
-    //     setDefaultOption(languageContext.language)
-    // }, [languageContext.language])
+        // Remove language that's being moved
+        const indexRemove = optionsCopy.indexOf(defaultOption)
+        optionsCopy.splice(indexRemove, 1)
+
+        // Add selected language to array's beginning
+        optionsCopy.unshift(defaultOption)
+
+        options = Array.from(optionsCopy)
+    }, [defaultOption])
+
+    React.useEffect(() => {
+        setDefaultOption(
+            options.find((item) => item === languageContext.language)
+        )
+    }, [languageContext.language])
 
     return (
-        <Dropdown
-            options={options}
-            onChange={(lang) => {
-                if (lang === defaultOption) return
-                languageContext.setLanguage(lang.value)
-            }}
-            value={defaultOption}
-            placeholder="Select an option"
-        />
+        <div style={{ alignSelf: "flex-start", justifySelf: "flex-start" }}>
+            <Dropdown
+                options={options}
+                onChange={(lang) => {
+                    console.log(lang)
+                    if (lang.value === defaultOption) return
+                    languageContext.setLanguage(lang.value)
+                }}
+                value={defaultOption}
+                placeholder="Select an option"
+            />
+        </div>
     )
 }

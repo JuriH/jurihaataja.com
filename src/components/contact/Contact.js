@@ -1,11 +1,11 @@
 import * as React from "react"
-import ContactItem from "../sub-components/ContactItem"
+import ContactItem from "./ContactItem"
 import { IoMailOutline, IoCall } from "react-icons/io5"
-import ProfilePicture from "../sub-components/ProfilePicture"
+import ProfilePicture from "./ProfilePicture"
 
-import { useStyleContext } from "../contexts/StyleProvider"
-import { useLanguageContext } from "../contexts/LanguageProvider"
-import "../App.css"
+import { useStyleContext } from "../../contexts/StyleProvider"
+import { useLanguageContext } from "../../contexts/LanguageProvider"
+import "../../App.css"
 import "./contact.css"
 
 const contactItems = [

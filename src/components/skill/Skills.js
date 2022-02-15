@@ -1,7 +1,7 @@
 import * as React from "react"
-import SkillItem from "../sub-components/SkillItem"
-import { useStyleContext } from "../contexts/StyleProvider"
-import { useLanguageContext } from "../contexts/LanguageProvider"
+import SkillItem from "./SkillItem"
+import { useStyleContext } from "../../contexts/StyleProvider"
+import { useLanguageContext } from "../../contexts/LanguageProvider"
 
 const text = {
     header: {
