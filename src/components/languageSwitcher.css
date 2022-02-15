@@ -4,8 +4,8 @@
         background-color: #b6ccfebf !important;
     }
 
-    .language-switcher-selected-language:hover {
-        background-color: #abc4ff;
+    .language-switcher-container:hover {
+        background-color: #b6ccfebf !important;
         transition: all 0.25s ease;
         -webkit-transition: all 0.25s ease;
         -moz-transition: all 0.25s ease;

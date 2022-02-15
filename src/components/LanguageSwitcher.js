@@ -120,6 +120,7 @@ export default function LanguageSwitcher() {
         //     </AnimateHeight>
         // </div>
         <div
+            className="language-switcher-container"
             style={{
                 display: "flex",
                 flexDirection: "column",
@@ -130,6 +131,10 @@ export default function LanguageSwitcher() {
                 backgroundColor: "#c1d3feBF",
                 border: "1px solid #ffffff",
                 marginTop: 10,
+                transition: "all 0.25s ease",
+                WebkitTransition: "all 0.25s ease",
+                WebkitAnimationDuration: "0.25s",
+                animationDuration: "0.25s",
             }}
         >
             <div
@@ -179,7 +184,6 @@ export default function LanguageSwitcher() {
                 </AnimateHeight>
             </div>
             <div
-                className="language-selector-selected-language"
                 style={{
                     zIndex: 1003,
                     cursor: "pointer",
