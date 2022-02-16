@@ -31,28 +31,28 @@ const Info = (props) => {
     const maxTextLines = infoContentHeight / (props.fontSize.longText * 1.5)
 
     const [textOverflow, setTextOverflow] = React.useState(null)
-    React.useEffect(() => {
-        textOverflow &&
-            console.log(
-                "Text overflows at index: " +
-                    props.index +
-                    ": " +
-                    (textOverflow === true)
-            )
-        // eslint-disable-next-line
-    }, [textOverflow])
+    // React.useEffect(() => {
+    //     textOverflow &&
+    //         console.log(
+    //             "Text overflows at index: " +
+    //                 props.index +
+    //                 ": " +
+    //                 (textOverflow === true)
+    //         )
+    //     // eslint-disable-next-line
+    // }, [textOverflow])
 
     // Get the whole height of the text, including the overflown, hidden text
     function checkTextOverflow() {
         const innerTextHeight = document.body.querySelectorAll(
             '[data-testid="info-text"]'
         )[props.index + 1].scrollHeight
-        console.log(
-            "innerTextHeight: " +
-                innerTextHeight +
-                " vs container: " +
-                infoContentHeight
-        )
+        // console.log(
+        //     "innerTextHeight: " +
+        //         innerTextHeight +
+        //         " vs container: " +
+        //         infoContentHeight
+        // )
         setInnerTextHeight(innerTextHeight)
         setTextOverflow(innerTextHeight > infoContentHeight)
     }

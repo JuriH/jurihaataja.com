@@ -128,8 +128,8 @@ const Age = (props) => {
 const Role = (props) => {
     const text = {
         header: {
-            en: "Role",
-            fi: "Rooli",
+            en: "Status",
+            fi: "Status",
         },
         value: {
             en: "Student",

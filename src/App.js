@@ -52,9 +52,9 @@ function App({ route, navigation }) {
     const languageRef = React.useRef(null)
 
     const [activeSections, setActiveSections] = React.useState([])
-    React.useEffect(() => {
-        console.log("Active sections: " + JSON.stringify(activeSections))
-    }, [activeSections])
+    // React.useEffect(() => {
+    //     console.log("Active sections: " + JSON.stringify(activeSections))
+    // }, [activeSections])
 
     function addToActiveSectionArr(toAdd) {
         if (activeSections.includes(toAdd)) return
@@ -102,6 +102,10 @@ function App({ route, navigation }) {
             })
         }
     }, [])
+
+    const [animatedOnce, setAnimatedOnce] = React.useState({
+        skills: false,
+    })
 
     return (
         <div
@@ -160,7 +164,6 @@ function App({ route, navigation }) {
                 }px 0px 0px 0px`}
                 as="div"
                 initialInView={true}
-                // threshold={1}
                 onChange={(inView) => {
                     if (inView) {
                         // console.log("Contact visible")
@@ -220,13 +223,20 @@ function App({ route, navigation }) {
                     topBarBottomMargin={topBarBottomMargin}
                 />
             </InView>
-            <InView
+            {/* <InView
                 rootMargin={`-${
                     topBarBottomMargin !== null ? topBarBottomMargin : 0
                 }px 0px 0px 0px`}
                 as="div"
                 // threshold={0.75}
                 onChange={(inView) => {
+                    if (inView && !animatedOnce.skills) {
+                        // console.log(
+                        //     "App",
+                        //     "Triggering Skills-section animation"
+                        // )
+                        setAnimatedOnce({ ...animatedOnce, skills: true })
+                    }
                     if (inView) {
                         // console.log("Skills visible")
                         addToActiveSectionArr("Skills")
@@ -236,10 +246,32 @@ function App({ route, navigation }) {
                 }}
             >
                 <Skills
+                    triggerAnim={animatedOnce.skills}
+                    offsetTop={offsetTop}
                     ref={skillRef}
                     windowDimensions={windowDimensions}
                     selectedTab={selectedTab}
                 />
+            </InView> */}
+            <InView>
+                {({ inView, ref, entry }) => (
+                    <Skills
+                        inViewRef={ref}
+                        inView={inView}
+                        entry={entry}
+                        triggerAnim={animatedOnce.skills}
+                        offsetTop={offsetTop}
+                        ref={skillRef}
+                        windowDimensions={windowDimensions}
+                        selectedTab={selectedTab}
+                        addToActiveSectionArr={() => {
+                            addToActiveSectionArr("Skills")
+                        }}
+                        removeFromActiveSectionArr={() => {
+                            removeFromActiveSectionArr("Skills")
+                        }}
+                    />
+                )}
             </InView>
             <InView
                 rootMargin={`-${
@@ -284,7 +316,6 @@ function App({ route, navigation }) {
                 />
             </InView>
             <Footer />
-
             <div
                 style={{
                     display: "flex",

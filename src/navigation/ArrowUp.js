@@ -9,9 +9,9 @@ const page = require("scroll-doc")()
 
 export default function ArrowUp(props) {
     const [arrowVisible, setArrowVisible] = React.useState(false)
-    React.useEffect(() => {
-        console.log("Arrow visible: " + arrowVisible)
-    }, [arrowVisible])
+    // React.useEffect(() => {
+    //     console.log("Arrow visible: " + arrowVisible)
+    // }, [arrowVisible])
 
     React.useEffect(() => {
         if (props.offsetTop >= props.triggerOffset && !arrowVisible) {
@@ -29,6 +29,7 @@ export default function ArrowUp(props) {
         <div
             className="arrow-up-container"
             style={{
+                // // Code below is from times when Language Switcher wasn't yet implemented
                 // zIndex: 1000,
                 // position: "fixed",
                 // right: 0,

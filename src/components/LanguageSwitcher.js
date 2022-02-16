@@ -9,15 +9,18 @@ let currentOptions = []
 export default function LanguageSwitcher() {
     const languageContext = useLanguageContext()
 
+    // Detect mouse hover on the Language Switcher that's used to reveal the language options
     const [mouseHoverLanguageSwitcher, setMouseHoverLanguageSwitcher] =
         React.useState(false)
 
+    // Detect mouse hover on revealed language options
     const [mouseHoverLanguageItem, setMouseHoverLanguageItem] =
         React.useState(null)
     React.useEffect(() => {
         mouseHoverLanguageItem !== null && setMouseHoverLanguageSwitcher(false)
     }, [mouseHoverLanguageItem])
 
+    // Detect when Animated Height -element has ended its reveal or un-reveal animation
     const [animatedHeightAnimComplete, setAnimatedHeightanimComplete] =
         React.useState(null)
 
@@ -40,7 +43,7 @@ export default function LanguageSwitcher() {
 
     const [revealed, setRevealed] = React.useState(false)
     React.useEffect(() => {
-        console.log("Revealed: " + revealed)
+        // console.log("Revealed: " + revealed)
         setAnimatedHeightanimComplete(false)
     }, [revealed])
 
@@ -70,6 +73,7 @@ export default function LanguageSwitcher() {
     }, [])
 
     return (
+        // // This code renders the currently active language on top, revealing the language options below it
         // <div
         //     className="language-switcher-container"
         //     style={{

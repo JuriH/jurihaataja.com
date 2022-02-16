@@ -56,12 +56,14 @@ export default function TopBar(props) {
     const languageContext = useLanguageContext()
     // console.log(languageContext.language)
 
+    // Top bar's height in pixels
     const [topBarOffsetY, setTopBarOffsetY] = React.useState(null)
     React.useEffect(() => {
         topBarOffsetY !== null &&
             props.callbackHeight(topBarRef.current.clientHeight)
     }, [topBarOffsetY])
 
+    // Determines if selected tab has been reached or not
     const [targetSection, setTargetSection] = React.useState(null)
     React.useEffect(() => {
         // console.log("Target section: " + targetSection)
@@ -74,9 +76,9 @@ export default function TopBar(props) {
         millis: null,
     })
 
-    React.useEffect(() => {
-        console.log("Selected tab: " + selectedTab.name)
-    }, [selectedTab])
+    // React.useEffect(() => {
+    //     console.log("Selected tab: " + selectedTab.name)
+    // }, [selectedTab])
 
     React.useEffect(() => {
         if (
@@ -129,7 +131,7 @@ export default function TopBar(props) {
             targetSection === null &&
             !props.activeSections.includes(selectedTab.name)
         ) {
-            console.log("Selected tab not included in Active Sections")
+            // console.log("Selected tab not included in Active Sections")
             setSelectedTab({
                 ...selectedTab,
                 name: null,

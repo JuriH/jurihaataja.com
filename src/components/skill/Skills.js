@@ -11,6 +11,7 @@ const text = {
 }
 
 // https://stackoverflow.com/a/1129270
+// Sort skills in array in descending order
 function compare(a, b) {
     if (a.rating > b.rating) {
         return -1
@@ -81,6 +82,15 @@ const Skills = React.forwardRef((props, ref) => {
     const [enableHighlight, setEnableHighlight] = React.useState(false)
 
     React.useEffect(() => {
+        if (props.inView) {
+            // console.log("Contact visible")
+            props.addToActiveSectionArr()
+        } else {
+            props.removeFromActiveSectionArr()
+        }
+    }, [props.inView])
+
+    React.useEffect(() => {
         if (props.selectedTab.name === "Skills" && !enableHighlight) {
             setEnableHighlight(true)
             setTimeout(() => {
@@ -89,6 +99,11 @@ const Skills = React.forwardRef((props, ref) => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.selectedTab.millis])
+
+    React.useEffect(() => {
+        props.triggerAnim &&
+            console.log("Skills", "Trigger animation: " + props.triggerAnim)
+    }, [props.triggerAnim])
 
     return (
         <div
@@ -125,10 +140,14 @@ const Skills = React.forwardRef((props, ref) => {
             >
                 {text.header[languageContext.language]}
             </p>
-            <div>
+            <div ref={props.inViewRef}>
                 {skillItems.map((skill, index) => (
                     <SkillItem
+                        totalRows={skillItems.length}
+                        inView={props.inView}
+                        triggerAnim={props.triggerAnim}
                         key={"skillItem" + index}
+                        index={index}
                         text={skill.text}
                         rating={skill.rating}
                     />

@@ -69,10 +69,10 @@ export default function EducationCarousel(props) {
     }
 
     const [currentActiveSlide, setCurrentActiveSlide] = React.useState(null)
-    React.useEffect(() => {
-        currentActiveSlide &&
-            console.log("Current Active slide: " + currentActiveSlide)
-    }, [currentActiveSlide])
+    // React.useEffect(() => {
+    //     currentActiveSlide &&
+    //         console.log("Current Active slide: " + currentActiveSlide)
+    // }, [currentActiveSlide])
 
     const Divider = () => (
         <div
