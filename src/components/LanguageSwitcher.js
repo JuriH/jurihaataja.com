@@ -6,7 +6,7 @@ import { isBrowser } from "react-device-detect"
 const options = ["en", "fi"]
 let currentOptions = []
 
-export default function LanguageSwitcher() {
+export default function LanguageSwitcher(props) {
     const languageContext = useLanguageContext()
 
     // Detect mouse hover on the Language Switcher that's used to reveal the language options
@@ -192,7 +192,9 @@ export default function LanguageSwitcher() {
                 className="language-switcher-revealer"
                 style={{
                     zIndex:
-                        revealed && animatedHeightAnimComplete ? 1004 : 1002,
+                        revealed && animatedHeightAnimComplete
+                            ? props.zIndex + 2
+                            : props.zIndex,
                     width: 50,
                     minHeight: 0,
                     borderRadius: 50,
@@ -256,7 +258,7 @@ export default function LanguageSwitcher() {
             <div
                 className="language-switcher-selected-language-container"
                 style={{
-                    zIndex: 1003,
+                    zIndex: props.zIndex + 1,
                     cursor: "pointer",
                     width: 50,
                     height: 50,

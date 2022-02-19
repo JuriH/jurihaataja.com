@@ -100,11 +100,6 @@ const Skills = React.forwardRef((props, ref) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.selectedTab.millis])
 
-    React.useEffect(() => {
-        props.triggerAnim &&
-            console.log("Skills", "Trigger animation: " + props.triggerAnim)
-    }, [props.triggerAnim])
-
     return (
         <div
             ref={ref}

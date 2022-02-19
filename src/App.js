@@ -22,7 +22,10 @@ import "react-toastify/dist/ReactToastify.css"
 import { useWindowDimensionsContext } from "./contexts/WindowDimensionsProvider"
 
 import InView from "react-intersection-observer"
-import { isBrowser } from "react-device-detect"
+
+import CookieConsentPopup from "./components/cookieConsentPopup/CookieConsentPopup"
+
+const floatingButtonsContainerZIndex = 900
 
 function App({ route, navigation }) {
     const [selectedTab, setSelectedTab] = React.useState({
@@ -102,10 +105,6 @@ function App({ route, navigation }) {
             })
         }
     }, [])
-
-    const [animatedOnce, setAnimatedOnce] = React.useState({
-        skills: false,
-    })
 
     return (
         <div
@@ -223,43 +222,12 @@ function App({ route, navigation }) {
                     topBarBottomMargin={topBarBottomMargin}
                 />
             </InView>
-            {/* <InView
-                rootMargin={`-${
-                    topBarBottomMargin !== null ? topBarBottomMargin : 0
-                }px 0px 0px 0px`}
-                as="div"
-                // threshold={0.75}
-                onChange={(inView) => {
-                    if (inView && !animatedOnce.skills) {
-                        // console.log(
-                        //     "App",
-                        //     "Triggering Skills-section animation"
-                        // )
-                        setAnimatedOnce({ ...animatedOnce, skills: true })
-                    }
-                    if (inView) {
-                        // console.log("Skills visible")
-                        addToActiveSectionArr("Skills")
-                    } else {
-                        removeFromActiveSectionArr("Skills")
-                    }
-                }}
-            >
-                <Skills
-                    triggerAnim={animatedOnce.skills}
-                    offsetTop={offsetTop}
-                    ref={skillRef}
-                    windowDimensions={windowDimensions}
-                    selectedTab={selectedTab}
-                />
-            </InView> */}
             <InView>
                 {({ inView, ref, entry }) => (
                     <Skills
                         inViewRef={ref}
                         inView={inView}
                         entry={entry}
-                        triggerAnim={animatedOnce.skills}
                         offsetTop={offsetTop}
                         ref={skillRef}
                         windowDimensions={windowDimensions}
@@ -320,7 +288,7 @@ function App({ route, navigation }) {
                 style={{
                     display: "flex",
                     flexDirection: "column",
-                    zIndex: 1000,
+                    zIndex: floatingButtonsContainerZIndex,
                     position: "fixed",
                     right: 0,
                     bottom: 0,
@@ -329,8 +297,9 @@ function App({ route, navigation }) {
                 }}
             >
                 <ArrowUp offsetTop={offsetTop} triggerOffset={100} />
-                <LanguageSwitcher />
+                <LanguageSwitcher zIndex={floatingButtonsContainerZIndex + 1} />
             </div>
+            <CookieConsentPopup />
         </div>
     )
 }

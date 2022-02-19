@@ -1,9 +1,17 @@
 import * as React from "react"
+import { useCookiesContext } from "../../contexts/CookiesContext"
 
 const circleRadius = 23
 
 // Interval for animating rating elements
 let timeout = null
+
+function animationPlayedCookieFound(cookies) {
+    const skillsAnimPlayed = cookies.get("skills_animation_played")
+    if (skillsAnimPlayed === undefined || skillsAnimPlayed === null)
+        return false
+    return true
+}
 
 const FilledCircleBorder = () => (
     <div
@@ -42,14 +50,30 @@ const EmptyCircleBorder = (props) => (
 function Rating(props) {
     const ratingList = []
 
-    // for (let i = 0; i < 5; i++) {
-    //     ratingList.push(
-    //         props.rating > i ? (
-    //             <FilledCircleBorder key={"rating" + i} />
-    //         ) : (
-    //             <EmptyCircleBorder key={"rating" + i} />
+    // // Play Rating-circles animation only once until the browser is closed
+    // if (animationPlayedCookieFound(props.cookies)) {
+    //     for (let i = 0; i < 5; i++) {
+    //         ratingList.push(
+    //             props.rating > i ? (
+    //                 <FilledCircleBorder key={"rating" + i} />
+    //             ) : (
+    //                 <EmptyCircleBorder key={"rating" + i} />
+    //             )
     //         )
-    //     )
+    //     }
+    // } else {
+    //     for (let i = 0; i < 5; i++) {
+    //         ratingList.push(
+    //             props.rating > i ? (
+    //                 <EmptyCircleBorder
+    //                     key={"rating" + i}
+    //                     className={"ratingCircle" + i}
+    //                 />
+    //             ) : (
+    //                 <EmptyCircleBorder key={"rating" + i} />
+    //             )
+    //         )
+    //     }
     // }
 
     for (let i = 0; i < 5; i++) {
@@ -82,27 +106,41 @@ function Rating(props) {
     )
 }
 
-function createAnimTimeout(index) {
+function createAnimTimeout(cookies, index) {
     timeout = setTimeout(() => {
         // console.log("Animating circles at index: " + (index - 1))
         document.body
             .querySelectorAll(`.ratingCircle${index - 1}`)
             .forEach((circle) => {
                 circle.style.backgroundColor = "#495057"
-                circle.style.border = "2px solid #495057"
-                circle.style.width = circleRadius
-                circle.style.height = circleRadius
+                circle.style.borderColor = "#495057"
             })
         if (index < 5) {
-            createAnimTimeout(index + 1)
+            createAnimTimeout(cookies, index + 1)
+        } else {
+            // // Cookie for indicating that the Rating-circles animation has been played
+            // cookies.set("skills_animation_played", {
+            //     secure:
+            //         !process.env.NODE_ENV ||
+            //         process.env.NODE_ENV === "development"
+            //             ? false
+            //             : true,
+            // })
         }
     }, 250)
 }
 
 export default function SkillItem(props) {
+    const cookiesContext = useCookiesContext()
+    const cookies = cookiesContext.cookies
     React.useEffect(() => {
-        if ((props.triggerAnim || props.inView) && timeout === null)
-            createAnimTimeout(1)
+        if (
+            (props.triggerAnim || props.inView) &&
+            timeout === null
+            // && !animationPlayedCookieFound(cookies)
+        ) {
+            createAnimTimeout(cookies, 1)
+        }
     }, [props.triggerAnim, props.inView])
 
     return (
@@ -117,7 +155,7 @@ export default function SkillItem(props) {
             }}
         >
             <p style={{ textAlign: "start", marginRight: 15 }}>{props.text}</p>
-            <Rating rating={props.rating} />
+            <Rating rating={props.rating} cookies={cookies} />
         </div>
     )
 }

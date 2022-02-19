@@ -1,7 +1,7 @@
 import * as React from "react"
 import { useStyleContext } from "../../contexts/StyleProvider"
 import { useLanguageContext } from "../../contexts/LanguageProvider"
-// import "./bio.css"
+import monthNumberToString from "../../utils/monthNumberToString"
 
 const text = {
     header: {
@@ -75,8 +75,10 @@ const Lastname = (props) => {
 
 const Born = (props) => {
     const text = {
-        en: "Born",
-        fi: "Syntymäaika",
+        header: {
+            en: "Born",
+            fi: "Syntymäaika",
+        },
     }
 
     return (
@@ -91,9 +93,24 @@ const Born = (props) => {
                 className={props.languageContext.className}
                 style={{ color: props.styleContext.content.header.color }}
             >
-                {text[props.languageContext.language]}
+                {text.header[props.languageContext.language]}
             </p>
-            <p style={{ color: props.styleContext.content.text.color }}>1996</p>
+            <div style={{ display: "flex", flexDirection: "row" }}>
+                <p
+                    className={props.languageContext.className}
+                    style={{ color: props.styleContext.content.text.color }}
+                >
+                    {monthNumberToString(1, props.languageContext.language)}
+                </p>
+                <p
+                    style={{
+                        color: props.styleContext.content.text.color,
+                        whiteSpace: "pre", // To keep leading whitespace in paragraph
+                    }}
+                >
+                    {" - 1996"}
+                </p>
+            </div>
         </div>
     )
 }
@@ -125,7 +142,7 @@ const Age = (props) => {
     )
 }
 
-const Role = (props) => {
+const Status = (props) => {
     const text = {
         header: {
             en: "Status",
@@ -318,7 +335,7 @@ const Bio = React.forwardRef((props, ref) => {
                 languageContext={languageContext}
                 styleContext={styleContext}
             />
-            <Role
+            <Status
                 languageContext={languageContext}
                 styleContext={styleContext}
             />

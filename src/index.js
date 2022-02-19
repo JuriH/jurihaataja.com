@@ -7,14 +7,17 @@ import reportWebVitals from "./reportWebVitals"
 import { StyleProvider } from "./contexts/StyleProvider"
 import { WindowDimensionsProvider } from "./contexts/WindowDimensionsProvider"
 import { LanguageProvider } from "./contexts/LanguageProvider"
+import { CookiesProvider } from "./contexts/CookiesContext"
 
 ReactDOM.render(
     <React.StrictMode>
         <StyleProvider>
             <WindowDimensionsProvider>
-                <LanguageProvider>
-                    <App />
-                </LanguageProvider>
+                <CookiesProvider>
+                    <LanguageProvider>
+                        <App />
+                    </LanguageProvider>
+                </CookiesProvider>
             </WindowDimensionsProvider>
         </StyleProvider>
     </React.StrictMode>,
