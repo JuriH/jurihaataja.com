@@ -49,7 +49,7 @@ const Socials = React.forwardRef((props, ref) => {
             className="Socials-container"
             ref={ref}
             style={{
-                ...styleContext.animations,
+                // ...styleContext.animations,
                 marginTop: 25,
                 marginBottom: 25,
                 backgroundColor:
