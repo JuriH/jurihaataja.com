@@ -138,6 +138,11 @@ export default function TopBar(props) {
         topBarRef !== null && setTopBarOffsetY(topBarRef.current.clientHeight)
     }, [topBarRef])
 
+    // Fixes bug where on switching between dark- and lightmodes, active tabs classnames got sometimes removed from the elements
+    const [initialDarkmodeState, setInitialDarkmodeState] = React.useState(
+        cookies.get("darkmode") === "true" ? "dark" : "light"
+    )
+
     return (
         <div
             ref={topBarRef}
@@ -189,11 +194,7 @@ export default function TopBar(props) {
                     >
                         <p
                             /** Load initial darkmode status from cookies, default to light  */
-                            className={`mode-${
-                                cookies.get("darkmode") !== undefined
-                                    ? cookies.get("darkmode")
-                                    : "light"
-                            } animate ${tab.name.en}-tab`}
+                            className={`mode-${initialDarkmodeState} animate ${tab.name.en}-tab`}
                             style={{
                                 fontSize: 14,
                                 padding: 10,

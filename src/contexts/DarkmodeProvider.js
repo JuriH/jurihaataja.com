@@ -22,7 +22,6 @@ export function DarkmodeProvider({ children }) {
     React.useEffect(() => {
         // Store darkmode-status (boolean; true/false) in darkmode-cookie only if user has allowed cookies
         if (cookies.get("cookies_consent") === "true") {
-            console.log("Cookies allowed")
             // Store darkmode-status in persistent cookie (30-days lifetime)
             let future = new Date()
             future.setDate(future.getDate() + 30)
