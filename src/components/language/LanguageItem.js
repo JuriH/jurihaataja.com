@@ -3,6 +3,9 @@ import calculateAspectRatioFit from "../../utils/calculateAspectRatio"
 import "./languageItem.css"
 
 import { useLanguageContext } from "../../contexts/LanguageProvider"
+import { useDarkmodeContext } from "../../contexts/DarkmodeProvider"
+
+import { isMobile } from "react-device-detect"
 
 const text = {
     language: {
@@ -40,6 +43,9 @@ const text = {
 }
 
 export default function LanguageItem(props) {
+    const darkmodeContext = useDarkmodeContext()
+    const darkmode = darkmodeContext.darkmode
+
     const languageContext = useLanguageContext()
     const keepAspectRatioSize = calculateAspectRatioFit(1191, 793.92, 50, 50)
     return (
@@ -71,11 +77,16 @@ export default function LanguageItem(props) {
                         marginRight: 15,
                         borderRadius: 5,
                         overflow: "hidden",
-                        border: "1px solid #e9ecef",
+                        border: `1px solid ${
+                            darkmode ? " #343a40" : "#e9ecef"
+                        }`,
                     }}
                 />
                 <p
                     className={languageContext.className}
+                    className={`animate language-item-key-${
+                        darkmode ? "dark" : "light"
+                    }`}
                     style={{ marginRight: 15 }}
                 >
                     {
@@ -95,9 +106,15 @@ export default function LanguageItem(props) {
             >
                 {Object.keys(props.rating).map((item, index) => (
                     <p
-                        className={languageContext.className}
+                        className={`animate language-item-value-${
+                            darkmode ? "dark" : "light"
+                        }`}
                         key={"languageItem" + index}
-                        style={{ flex: 1, textAlign: "center", fontSize: 14 }} // Set to 14 to add spacing on mobile
+                        style={{
+                            flex: 1,
+                            textAlign: "center",
+                            fontSize: isMobile ? 14 : 16,
+                        }} // Set to 14 on mobile to add spacing
                     >
                         {
                             text.rating[props.rating[item].toLowerCase()][

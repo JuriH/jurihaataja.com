@@ -1,3 +1,14 @@
+/** Apply effect only for mouse */
+@media only screen and (min-width: 450px) {
+    .education-item-container-light:hover {
+        background-color: #07427c;
+    }
+
+    .education-item-container-dark:hover {
+        background-color: #07427c !important;
+    }
+}
+
 .educationItemIcon:hover {
     background-color: #dee2e6;
     align-items: center;
@@ -14,4 +25,12 @@
 
 .educationPeriodItem-collapsed {
     transform: scaleY(1);
+}
+
+.education-item-container-light {
+    background-color: #edf2fb;
+}
+
+.education-item-container-dark {
+    background-color: #073c6f !important;
 }

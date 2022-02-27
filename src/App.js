@@ -5,7 +5,10 @@ import "./App.css"
 import TopBar from "./navigation/TopBar"
 import Contact from "./components/contact/Contact"
 import Bio from "./components/bio/Bio"
+
 import Education from "./components/education/Education"
+import { educations } from "./resources/educations"
+
 import Skills from "./components/skill/Skills"
 import Socials from "./components/social/Socials"
 import Languages from "./components/language/Languages"
@@ -13,6 +16,7 @@ import Languages from "./components/language/Languages"
 // Floating elements
 import ArrowUp from "./navigation/ArrowUp"
 import LanguageSwitcher from "./components/LanguageSwitcher"
+import DarkmodeSwitcher from "./components/darkmode/DarkmodeSwitcher"
 
 import Footer from "./components/Footer"
 
@@ -25,9 +29,16 @@ import InView from "react-intersection-observer"
 
 import CookieConsentPopup from "./components/cookieConsentPopup/CookieConsentPopup"
 
+import { useStyleContext } from "./contexts/StyleProvider"
+import { useDarkmodeContext } from "./contexts/DarkmodeProvider"
+
 const floatingButtonsContainerZIndex = 900
 
-function App({ route, navigation }) {
+export default function App({ route, navigation }) {
+    const styleContext = useStyleContext()
+    const darkmodeContext = useDarkmodeContext()
+    const darkmode = darkmodeContext.darkmode
+
     const [selectedTab, setSelectedTab] = React.useState({
         name: null,
         millis: new Date(),
@@ -37,9 +48,6 @@ function App({ route, navigation }) {
 
     // Window's offset from the top of the document
     const [offsetTop, setOffsetTop] = React.useState(0)
-    React.useEffect(() => {
-        // console.log(offsetTop)
-    }, [offsetTop])
 
     // Top navigation bar's height
     const [topBarBottomMargin, setTopBarBottomMargin] = React.useState(null)
@@ -47,6 +55,9 @@ function App({ route, navigation }) {
         // console.log("Top bar bottom margin: " + topBarBottomMargin)
     }, [topBarBottomMargin])
 
+    /**
+     * References for sections
+     */
     const contactRef = React.useRef(null)
     const bioRef = React.useRef(null)
     const educationRef = React.useRef(null)
@@ -54,26 +65,7 @@ function App({ route, navigation }) {
     const socialRef = React.useRef(null)
     const languageRef = React.useRef(null)
 
-    const [activeSections, setActiveSections] = React.useState([])
-    // React.useEffect(() => {
-    //     console.log("Active sections: " + JSON.stringify(activeSections))
-    // }, [activeSections])
-
-    function addToActiveSectionArr(toAdd) {
-        if (activeSections.includes(toAdd)) return
-        setActiveSections([...activeSections, toAdd])
-    }
-
-    function removeFromActiveSectionArr(toRemove) {
-        if (!activeSections.includes(toRemove)) return
-        let arrCopy = Array.from(activeSections)
-        const removeIndex = arrCopy.indexOf(toRemove)
-        arrCopy.splice(removeIndex, 1)
-        setActiveSections(arrCopy)
-    }
-
     function TopBarBottomMargin(height) {
-        // console.log("TopBarBottomMargin: " + height)
         setTopBarBottomMargin(height)
     }
 
@@ -83,7 +75,6 @@ function App({ route, navigation }) {
     }
 
     function handleRightClick(e) {
-        // console.log(e.target.nodeName)
         e.preventDefault()
     }
 
@@ -106,16 +97,49 @@ function App({ route, navigation }) {
         }
     }, [])
 
+    /**
+     * Handle Top Bar's tabs' styles when navigating the website *STARTS HERE*
+     */
+
+    function addActiveTabClass(element, mode) {
+        if (!element.classList.contains(`active-tab-${mode}`)) {
+            element.classList.add(`active-tab-${mode}`)
+        }
+    }
+
+    function removeActiveTabClass(element, mode) {
+        if (element.classList.contains(`selected-tab-${mode}`)) {
+            element.classList.remove(`selected-tab-${mode}`)
+        }
+        element.classList.remove(`active-tab-${mode}`)
+    }
+
+    function handleSectionInView(inView, sectionName) {
+        const mode = darkmode ? "dark" : "light"
+        const element = document.querySelector(`.${sectionName}-tab`)
+        if (inView) {
+            addActiveTabClass(element, mode)
+        } else {
+            removeActiveTabClass(element, mode)
+        }
+    }
+
+    /**
+     * Handle Top Bar's tabs' styles when navigating the website *ENDS HERE*
+     */
+
     return (
         <div
             className="App"
             style={{
+                ...styleContext.animations,
                 justifyContent: "center",
                 alignItems: "center",
                 display: "flex",
                 flexDirection: "column",
                 width: "100%",
                 overflow: "hidden",
+                backgroundColor: darkmode ? "#000814" : "#ffffff",
             }}
         >
             <ToastContainer
@@ -138,7 +162,6 @@ function App({ route, navigation }) {
                     socialRef: socialRef,
                     languageRef: languageRef,
                 }}
-                activeSections={activeSections}
                 offsetTop={offsetTop}
                 windowDimensions={windowDimensions}
                 callbackHeight={(height) => {
@@ -157,70 +180,52 @@ function App({ route, navigation }) {
                     height: topBarBottomMargin + 25,
                 }}
             />
-            <InView
-                rootMargin={`-${
-                    topBarBottomMargin !== null ? topBarBottomMargin : 0
-                }px 0px 0px 0px`}
-                as="div"
-                initialInView={true}
-                onChange={(inView) => {
-                    if (inView) {
-                        // console.log("Contact visible")
-                        addToActiveSectionArr("Contact")
-                    } else {
-                        removeFromActiveSectionArr("Contact")
-                    }
-                }}
-            >
-                <Contact
-                    ref={contactRef}
-                    windowDimensions={windowDimensions}
-                    selectedTab={selectedTab}
-                />
+            <InView>
+                {({ inView, ref, entry }) => (
+                    <Contact
+                        inViewRef={ref}
+                        inView={inView}
+                        entry={entry}
+                        inViewCallback={() => {
+                            handleSectionInView(inView, "Contact")
+                        }}
+                        ref={contactRef}
+                        windowDimensions={windowDimensions}
+                        selectedTab={selectedTab}
+                    />
+                )}
             </InView>
-            <InView
-                rootMargin={`-${
-                    topBarBottomMargin !== null ? topBarBottomMargin : 0
-                }px 0px 0px 0px`}
-                as="div"
-                // threshold={[0.75, 1]}
-                onChange={(inView) => {
-                    if (inView) {
-                        // console.log("Bio visible")
-                        addToActiveSectionArr("Bio")
-                    } else {
-                        removeFromActiveSectionArr("Bio")
-                    }
-                }}
-            >
-                <Bio
-                    ref={bioRef}
-                    windowDimensions={windowDimensions}
-                    selectedTab={selectedTab}
-                />
+            <InView>
+                {({ inView, ref, entry }) => (
+                    <Bio
+                        inViewRef={ref}
+                        inView={inView}
+                        entry={entry}
+                        inViewCallback={() => {
+                            handleSectionInView(inView, "Bio")
+                        }}
+                        ref={bioRef}
+                        windowDimensions={windowDimensions}
+                        selectedTab={selectedTab}
+                    />
+                )}
             </InView>
-            <InView
-                rootMargin={`-${
-                    topBarBottomMargin !== null ? topBarBottomMargin : 0
-                }px 0px 0px 0px`}
-                as="div"
-                // threshold={[0.75, 1]}
-                onChange={(inView) => {
-                    if (inView) {
-                        // console.log("Bio visible")
-                        addToActiveSectionArr("Education")
-                    } else {
-                        removeFromActiveSectionArr("Education")
-                    }
-                }}
-            >
-                <Education
-                    activeSections={activeSections}
-                    ref={educationRef}
-                    windowDimensions={windowDimensions}
-                    selectedTab={selectedTab}
-                    topBarBottomMargin={topBarBottomMargin}
-                />
+            <InView>
+                {({ inView, ref, entry }) => (
+                    <Education
+                        source={educations[0]}
+                        inViewRef={ref}
+                        inView={inView}
+                        entry={entry}
+                        inViewCallback={() => {
+                            handleSectionInView(inView, "Education")
+                        }}
+                        ref={educationRef}
+                        windowDimensions={windowDimensions}
+                        selectedTab={selectedTab}
+                        topBarBottomMargin={topBarBottomMargin}
+                    />
+                )}
             </InView>
             <InView>
                 {({ inView, ref, entry }) => (
@@ -228,60 +233,45 @@ function App({ route, navigation }) {
                         inViewRef={ref}
                         inView={inView}
                         entry={entry}
+                        inViewCallback={() => {
+                            handleSectionInView(inView, "Skills")
+                        }}
                         offsetTop={offsetTop}
                         ref={skillRef}
                         windowDimensions={windowDimensions}
                         selectedTab={selectedTab}
-                        addToActiveSectionArr={() => {
-                            addToActiveSectionArr("Skills")
-                        }}
-                        removeFromActiveSectionArr={() => {
-                            removeFromActiveSectionArr("Skills")
-                        }}
                     />
                 )}
             </InView>
-            <InView
-                rootMargin={`-${
-                    topBarBottomMargin !== null ? topBarBottomMargin : 0
-                }px 0px 0px 0px`}
-                as="div"
-                // threshold={1}
-                onChange={(inView) => {
-                    if (inView) {
-                        // console.log("Socials visible")
-                        addToActiveSectionArr("Socials")
-                    } else {
-                        removeFromActiveSectionArr("Socials")
-                    }
-                }}
-            >
-                <Socials
-                    ref={socialRef}
-                    windowDimensions={windowDimensions}
-                    selectedTab={selectedTab}
-                />
+            <InView>
+                {({ inView, ref, entry }) => (
+                    <Socials
+                        inViewRef={ref}
+                        inView={inView}
+                        entry={entry}
+                        inViewCallback={() => {
+                            handleSectionInView(inView, "Socials")
+                        }}
+                        ref={socialRef}
+                        windowDimensions={windowDimensions}
+                        selectedTab={selectedTab}
+                    />
+                )}
             </InView>
-            <InView
-                rootMargin={`-${
-                    topBarBottomMargin !== null ? topBarBottomMargin : 0
-                }px 0px 0px 0px`}
-                as="div"
-                // threshold={1}
-                onChange={(inView) => {
-                    if (inView) {
-                        // console.log("Languages visible")
-                        addToActiveSectionArr("Languages")
-                    } else {
-                        removeFromActiveSectionArr("Languages")
-                    }
-                }}
-            >
-                <Languages
-                    ref={languageRef}
-                    windowDimensions={windowDimensions}
-                    selectedTab={selectedTab}
-                />
+            <InView>
+                {({ inView, ref, entry }) => (
+                    <Languages
+                        inViewRef={ref}
+                        inView={inView}
+                        entry={entry}
+                        inViewCallback={() => {
+                            handleSectionInView(inView, "Languages")
+                        }}
+                        ref={languageRef}
+                        windowDimensions={windowDimensions}
+                        selectedTab={selectedTab}
+                    />
+                )}
             </InView>
             <Footer />
             <div
@@ -292,16 +282,17 @@ function App({ route, navigation }) {
                     position: "fixed",
                     right: 0,
                     bottom: 0,
-                    paddingBottom: "5vw",
-                    padding: "3.5vw",
+                    marginBottom: "5vw",
+                    margin: "3.5vw",
+                    pointerEvents: "none",
+                    touchAction: "none",
                 }}
             >
                 <ArrowUp offsetTop={offsetTop} triggerOffset={100} />
                 <LanguageSwitcher zIndex={floatingButtonsContainerZIndex + 1} />
+                <DarkmodeSwitcher />
             </div>
             <CookieConsentPopup />
         </div>
     )
 }
-
-export default App

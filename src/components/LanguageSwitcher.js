@@ -175,6 +175,8 @@ export default function LanguageSwitcher(props) {
                 WebkitTransition: "all 0.25s ease",
                 WebkitAnimationDuration: "0.25s",
                 animationDuration: "0.25s",
+                pointerEvents: "auto",
+                touchAction: "auto",
             }}
             onMouseEnter={() => {
                 isBrowser && setMouseHoverLanguageSwitcher(true)

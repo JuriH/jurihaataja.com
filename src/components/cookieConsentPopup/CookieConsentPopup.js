@@ -2,7 +2,7 @@ import * as React from "react"
 import CookieConsent from "react-cookie-consent"
 import waitForElement from "../../utils/waitForElement"
 import { isBrowser } from "react-device-detect"
-import { useCookiesContext } from "../../contexts/CookiesContext"
+import { useCookiesContext } from "../../contexts/CookiesProvider"
 import { useLanguageContext } from "../../contexts/LanguageProvider"
 
 const text = {

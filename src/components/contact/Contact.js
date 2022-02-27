@@ -3,10 +3,10 @@ import ContactItem from "./ContactItem"
 import { IoMailOutline, IoCall } from "react-icons/io5"
 import ProfilePicture from "./ProfilePicture"
 
-import { useStyleContext } from "../../contexts/StyleProvider"
 import { useLanguageContext } from "../../contexts/LanguageProvider"
-import "../../App.css"
-import "./contact.css"
+import { useDarkmodeContext } from "../../contexts/DarkmodeProvider"
+
+// import "../../App.css"
 
 const contactItems = [
     {
@@ -30,8 +30,13 @@ const text = {
 
 const Contact = React.forwardRef((props, ref) => {
     const languageContext = useLanguageContext()
-    const styleContext = useStyleContext()
+    const darkmodeContext = useDarkmodeContext()
+    const darkmode = darkmodeContext.darkmode
     const [enableHighlight, setEnableHighlight] = React.useState(false)
+
+    React.useEffect(() => {
+        props.inViewCallback()
+    }, [props.inView])
 
     React.useEffect(() => {
         if (
@@ -49,6 +54,7 @@ const Contact = React.forwardRef((props, ref) => {
 
     return (
         <div
+            className={`Contact-container-${darkmode ? "dark" : "light"}`}
             ref={ref}
             style={{
                 marginBottom: 25,
@@ -58,15 +64,13 @@ const Contact = React.forwardRef((props, ref) => {
                 width: props.windowDimensions.width > 500 ? 500 : "75vw",
                 justifyContent: "space-between",
                 alignItems: "center",
-                backgroundColor: "#f8f9fa",
             }}
         >
             <p
-                className={languageContext.className}
+                className={`${
+                    languageContext.className
+                } Contact-section-header-${darkmode ? "dark" : "light"}`}
                 style={{
-                    backgroundColor: enableHighlight
-                        ? styleContext.content.title.highlighted.backgroundColor
-                        : "transparent",
                     transition: "all .25s ease",
                     WebkitTransition: "all .25s ease",
                     MozTransition: "all .25s ease",
@@ -74,7 +78,6 @@ const Contact = React.forwardRef((props, ref) => {
                     display: "inline-block",
                     padding: 10,
                     borderRadius: 10,
-                    color: styleContext.content.header.color,
                 }}
             >
                 {text.header[languageContext.language]}
@@ -90,6 +93,7 @@ const Contact = React.forwardRef((props, ref) => {
             >
                 <ProfilePicture />
                 <div
+                    ref={props.inViewRef}
                     style={{
                         display: "flex",
                         flexDirection: "column",
@@ -99,6 +103,7 @@ const Contact = React.forwardRef((props, ref) => {
                 >
                     {contactItems.map((item, index) => (
                         <ContactItem
+                            className="contact-item"
                             key={"contactItem" + index}
                             type={item.type}
                             text={item.text}

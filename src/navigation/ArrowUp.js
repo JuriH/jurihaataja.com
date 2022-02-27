@@ -30,7 +30,6 @@ export default function ArrowUp(props) {
             className="arrow-up-container"
             style={{
                 // // Code below is from times when Language Switcher wasn't yet implemented
-                // zIndex: 1000,
                 // position: "fixed",
                 // right: 0,
                 // bottom: 0,
@@ -41,6 +40,8 @@ export default function ArrowUp(props) {
                 WebkitTransition: "all .4s ease",
                 MozTransition: "all .4s ease",
                 cursor: arrowVisible ? "pointer" : "default",
+                pointerEvents: arrowVisible ? "auto" : "none",
+                touchAction: arrowVisible ? "auto" : "none",
             }}
         >
             <div

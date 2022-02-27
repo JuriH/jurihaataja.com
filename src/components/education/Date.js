@@ -1,6 +1,7 @@
 import * as React from "react"
 import monthNumberToString from "../../utils/monthNumberToString"
 import { useLanguageContext } from "../../contexts/LanguageProvider"
+import { useDarkmodeContext } from "../../contexts/DarkmodeProvider"
 
 const text = {
     header: {
@@ -10,6 +11,9 @@ const text = {
 }
 
 export default function Date(props) {
+    const darkmodeContext = useDarkmodeContext()
+    const darkmode = darkmodeContext.darkmode
+
     const languageContext = useLanguageContext()
 
     return (
@@ -27,22 +31,26 @@ export default function Date(props) {
             }}
         >
             <p
-                className={languageContext.className}
+                className={`${
+                    languageContext.className
+                } education-carousel-item-key-${darkmode ? "dark" : "light"}`}
                 style={{
                     margin: 0,
                     fontSize: props.fontSize.text,
-                    color: props.style.content.header.color,
+                    // color: props.style.content.header.color,
                     alignSelf: "flex-start",
                 }}
             >
                 {text.header[languageContext.language]}
             </p>
             <p
-                className={languageContext.className}
+                className={`${
+                    languageContext.className
+                } education-carousel-item-value-${darkmode ? "dark" : "light"}`}
                 style={{
                     margin: 0,
                     fontSize: props.fontSize.text,
-                    color: props.style.content.text.color,
+                    // color: props.style.content.text.color,
                 }}
             >
                 {monthNumberToString(

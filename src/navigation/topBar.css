@@ -3,6 +3,14 @@
     .tab:hover p {
         background-color: #9bb1ffbf !important;
     }
+
+    .mode-dark:hover {
+        background-color: #00186e !important;
+    }
+
+    .mode-light:hover {
+        background-color: #abc4ff !important;
+    }
 }
 
 .tab-item {
@@ -11,4 +19,16 @@
     -moz-transition: all 0.25s ease;
     -webkit-animation-duration: 25s;
     animation-duration: 25s;
+}
+
+.selected-light {
+    background-color: #abc4ff !important;
+}
+
+.selected-dark {
+    background-color: #000814 !important;
+}
+
+.selected-tab-light {
+    background-color: rgb(204, 219, 253);
 }

@@ -1,7 +1,7 @@
 import * as React from "react"
 import SkillItem from "./SkillItem"
-import { useStyleContext } from "../../contexts/StyleProvider"
 import { useLanguageContext } from "../../contexts/LanguageProvider"
+import { useDarkmodeContext } from "../../contexts/DarkmodeProvider"
 
 const text = {
     header: {
@@ -60,6 +60,10 @@ let skillItems = [
         rating: 2,
     },
     {
+        text: "Java",
+        rating: 2,
+    },
+    {
         text: "Git",
         rating: 3,
     },
@@ -76,18 +80,18 @@ let skillItems = [
 skillItems.sort(compare)
 
 const Skills = React.forwardRef((props, ref) => {
-    const styleContext = useStyleContext()
+    const darkmodeContext = useDarkmodeContext()
+    const darkmode = darkmodeContext.darkmode
+
     const languageContext = useLanguageContext()
 
     const [enableHighlight, setEnableHighlight] = React.useState(false)
 
     React.useEffect(() => {
-        if (props.inView) {
-            // console.log("Contact visible")
-            props.addToActiveSectionArr()
-        } else {
-            props.removeFromActiveSectionArr()
-        }
+        props.inViewCallback(
+            props.inView,
+            document.querySelector(".Skills-tab")
+        )
     }, [props.inView])
 
     React.useEffect(() => {
@@ -102,12 +106,11 @@ const Skills = React.forwardRef((props, ref) => {
 
     return (
         <div
+            className={`Skills-container-${darkmode ? "dark" : "light"}`}
             ref={ref}
             style={{
                 marginTop: 25,
                 marginBottom: 25,
-                backgroundColor: "#f8f9fa",
-                // paddingTop: 10, // To compensate with added padding in section title for highlighting effect
                 paddingBottom: 10,
                 paddingLeft: 15,
                 paddingRight: 15,
@@ -118,11 +121,10 @@ const Skills = React.forwardRef((props, ref) => {
             }}
         >
             <p
-                className={languageContext.className}
+                className={`${
+                    languageContext.className
+                } Skills-section-header-${darkmode ? "dark" : "light"}`}
                 style={{
-                    backgroundColor: enableHighlight
-                        ? styleContext.content.title.highlighted.backgroundColor
-                        : "transparent",
                     transition: "all .5s ease",
                     WebkitTransition: "all .5s ease",
                     MozTransition: "all .5s ease",

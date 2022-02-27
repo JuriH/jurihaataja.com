@@ -1,7 +1,9 @@
 import * as React from "react"
 import { IoLink } from "react-icons/io5"
 import { useLanguageContext } from "../../contexts/LanguageProvider"
+import { useDarkmodeContext } from "../../contexts/DarkmodeProvider"
 import { isBrowser } from "react-device-detect"
+import "./transcriptOfRecords.css"
 
 const text = {
     transcriptOfRecords: {
@@ -10,12 +12,16 @@ const text = {
     },
 }
 
-export default function TranscriptOfRecords() {
+export default function TranscriptOfRecords(props) {
+    const darkmodeContext = useDarkmodeContext()
+    const darkmode = darkmodeContext.darkmode
+
     const languageContext = useLanguageContext()
     const [pressed, setPressed] = React.useState(false)
     const [mouseHover, setMouseHover] = React.useState(false)
     return (
         <div
+            className={`transcript-of-records-${darkmode ? "dark" : "light"}`}
             style={{
                 marginTop: 15,
                 display: "inline-flex",
@@ -23,15 +29,15 @@ export default function TranscriptOfRecords() {
                 alignItems: "center",
                 justifyContent: "center",
                 borderRadius: 10,
-                color: "#f8f9fa",
-                backgroundColor: pressed
-                    ? "#9163cb"
-                    : mouseHover
-                    ? "#b185db"
-                    : "#c19ee0",
+                // color: "#f8f9fa",
+                // backgroundColor: pressed
+                //     ? "#9163cb"
+                //     : mouseHover
+                //     ? "#b185db"
+                //     : "#c19ee0",
                 paddingLeft: 5,
                 paddingRight: 5,
-                border: "1px solid #d7e3fcBF",
+                // border: "1px solid #d7e3fcBF",
                 cursor: "pointer",
                 transition: "all .3s ease",
                 WebkitTransition: "all .3s ease",
@@ -57,14 +63,11 @@ export default function TranscriptOfRecords() {
                 setPressed(false)
             }}
             onClick={() => {
-                window.open(
-                    "https://drive.google.com/file/d/1SLi_uxva5tFsMQsz7tL64EXOM94TKZpQ/view?usp=sharing",
-                    "_blank"
-                )
+                window.open(props.transcriptOfRecords, "_blank")
             }}
         >
             <p
-                className={languageContext.className}
+                // className={languageContext.className}
                 style={{
                     margin: 0,
                     padding: 5,

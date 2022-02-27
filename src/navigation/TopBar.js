@@ -2,6 +2,9 @@ import * as React from "react"
 import "../App.css"
 import "./topBar.css"
 import { useLanguageContext } from "../contexts/LanguageProvider"
+import { useStyleContext } from "../contexts/StyleProvider"
+import { useDarkmodeContext } from "../contexts/DarkmodeProvider"
+import { useCookiesContext } from "../contexts/CookiesProvider"
 
 // Support animated scrolling on Safari as well
 const scroll = require("scroll")
@@ -51,10 +54,58 @@ const tabItems = [
         ref: "languageRef",
     },
 ]
+const highlightDurationMs = 450
+
+const highlightSection = (tabName, _darkmode) => {
+    console.log("darkmode: " + _darkmode)
+    console.log(tabName)
+    // Set highlight for section header
+    document
+        .querySelector(`[class*="${tabName}-container"] p`)
+        .classList.add("selected-section")
+
+    try {
+        console.log("Removing highlight from previous selected tab")
+        // Remove higlight from previous selected tab
+        document
+            .querySelector('[class*="selected-tab-' + _darkmode + '"]')
+            .classList.remove(`selected-tab-${_darkmode}`)
+    } catch (err) {}
+
+    // Add highlight to current selected tab
+    document
+        .querySelector(`.${tabName}-tab`)
+        .classList.add(`selected-tab-${_darkmode}`)
+
+    setTimeout(() => {
+        // Remove highlight for section header with delay
+        document
+            .querySelector(`[class*="${tabName}-container"] p`)
+            .classList.remove("selected-section")
+    }, highlightDurationMs)
+}
+
+const scrollToSection = (tabName, callbackTab, topBarOffsetY) => {
+    scroll.top(
+        page,
+        tabItems[0].name.en === tabName
+            ? 0
+            : document.querySelector('[class*="' + tabName + '-container"]')
+                  .offsetTop - topBarOffsetY,
+        (err, scrollTop) => {}
+    )
+    callbackTab(tabName)
+}
 
 export default function TopBar(props) {
+    const cookiesContext = useCookiesContext()
+    const cookies = cookiesContext.cookies
+
     const languageContext = useLanguageContext()
-    // console.log(languageContext.language)
+    const styleContext = useStyleContext()
+
+    const darkmodeContext = useDarkmodeContext()
+    const darkmode = darkmodeContext.darkmode
 
     // Top bar's height in pixels
     const [topBarOffsetY, setTopBarOffsetY] = React.useState(null)
@@ -62,41 +113,6 @@ export default function TopBar(props) {
         topBarOffsetY !== null &&
             props.callbackHeight(topBarRef.current.clientHeight)
     }, [topBarOffsetY])
-
-    // Determines if selected tab has been reached or not
-    const [targetSection, setTargetSection] = React.useState(null)
-    React.useEffect(() => {
-        // console.log("Target section: " + targetSection)
-        if (props.activeSections.includes(targetSection)) setTargetSection(null)
-    }, [targetSection])
-
-    const [selectedTab, setSelectedTab] = React.useState({
-        name: null,
-        ref: null,
-        millis: null,
-    })
-
-    // React.useEffect(() => {
-    //     console.log("Selected tab: " + selectedTab.name)
-    // }, [selectedTab])
-
-    React.useEffect(() => {
-        if (
-            (selectedTab.name !== null,
-            selectedTab.ref !== null,
-            selectedTab.millis !== null)
-        ) {
-            scroll.top(
-                page,
-                tabItems[0].name.en === selectedTab.name
-                    ? 0
-                    : props.refs[selectedTab.ref].current.offsetTop -
-                          topBarOffsetY,
-                (err, scrollTop) => {}
-            )
-            props.callbackTab(selectedTab.name)
-        }
-    }, [selectedTab])
 
     // Automatically scroll to Contact-tab on component mount
     React.useEffect(() => {
@@ -122,29 +138,12 @@ export default function TopBar(props) {
         topBarRef !== null && setTopBarOffsetY(topBarRef.current.clientHeight)
     }, [topBarRef])
 
-    React.useEffect(() => {
-        if (props.activeSections.includes(targetSection)) {
-            // console.log("Selected tab included in Active Sections")
-            setTargetSection(null)
-        }
-        if (
-            targetSection === null &&
-            !props.activeSections.includes(selectedTab.name)
-        ) {
-            // console.log("Selected tab not included in Active Sections")
-            setSelectedTab({
-                ...selectedTab,
-                name: null,
-                ref: null,
-                millis: null,
-            })
-        }
-    }, [props.activeSections])
-
     return (
         <div
             ref={topBarRef}
+            className={`navigation-top-bar-${darkmode ? "dark" : "light"}`}
             style={{
+                ...styleContext.animations,
                 userSelect: "none",
                 display: "flex",
                 flexDirection: "row",
@@ -156,28 +155,28 @@ export default function TopBar(props) {
                 left: 0,
                 zIndex: 1000,
                 width: "100vw",
-                backgroundColor: "#ffffff",
-                boxShadow: "0px 1px 10px 0px #dee2e6",
-                // paddingLeft: 10,
+                backgroundColor: darkmode ? "#000814" : "#ffffff",
+                boxShadow: `0px 1px ${darkmode ? "8" : "10"}px 0px ${
+                    darkmode ? "#6c757dBF" : "#dee2e6"
+                }`,
                 paddingTop: 5,
-                // paddingBottom: 5,
-                WebkitTapHighlightColor: "rgba(0,0,0,0)", // Fixes flickering on tap on Safari iOS
+                WebkitTapHighlightColor: "transparent", // Fixes flickering on tap on Safari iOS
             }}
         >
             {tabItems.map((tab, index) => {
                 return (
                     <div
-                        className="tab"
                         key={"topBarItem" + index}
                         onClick={() => {
-                            // console.log("Clicked tab: " + tab.name)
-                            setTargetSection(tab.name.en)
-                            setSelectedTab({
-                                ...selectedTab,
-                                name: tab.name.en,
-                                ref: tab.ref,
-                                millis: new Date(),
-                            })
+                            highlightSection(
+                                tab.name.en,
+                                darkmode ? "dark" : "light"
+                            )
+                            scrollToSection(
+                                tab.name.en,
+                                props.callbackTab,
+                                topBarOffsetY
+                            )
                         }}
                         style={{
                             justifyContent: "flex-start",
@@ -189,23 +188,22 @@ export default function TopBar(props) {
                         }}
                     >
                         <p
-                            className={"animate-language"}
+                            /** Load initial darkmode status from cookies, default to light  */
+                            className={`mode-${
+                                cookies.get("darkmode") !== undefined
+                                    ? cookies.get("darkmode")
+                                    : "light"
+                            } animate ${tab.name.en}-tab`}
                             style={{
                                 fontSize: 14,
-                                backgroundColor:
-                                    selectedTab.name === tab.name.en
-                                        ? "#ccdbfd"
-                                        : props.activeSections.includes(
-                                              tab.name.en
-                                          )
-                                        ? "#e2eafcBF"
-                                        : "transparent",
                                 padding: 10,
                                 borderRadius: 15,
+                                border: "2px solid transparent",
                                 transition: "all .5s ease",
                                 WebkitTransition: "all .5s ease",
                                 MozTransition: "all .5s ease",
                                 margin: 0,
+                                color: darkmode ? "#ffffff" : "#000000",
                             }}
                         >
                             {tab.name[languageContext.language]}

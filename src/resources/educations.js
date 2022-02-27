@@ -5,7 +5,10 @@ let educations = [
                 en: "Oulu University of Applied Sciences",
                 fi: "Oulun ammattikorkeakoulu",
             },
-            short: "OAMK",
+            short: {
+                en: "OAMK",
+                fi: "OAMK",
+            },
         },
         yearStarted: 2019,
         yearEnded: null,
@@ -13,6 +16,8 @@ let educations = [
             en: "Software Engineer",
             fi: "Ohjelmistokehittäjä",
         },
+        transcriptOfRecords:
+            "https://drive.google.com/file/d/1SLi_uxva5tFsMQsz7tL64EXOM94TKZpQ/view?usp=sharing",
         periods: [
             {
                 period: {
@@ -161,6 +166,7 @@ let educations = [
         ],
     },
 ]
+
 function sortByDate(index) {
     let periodsCopy = []
 

@@ -13,6 +13,7 @@ import "./educationCarousel.css"
 
 import { useLanguageContext } from "../../contexts/LanguageProvider"
 import { useStyleContext } from "../../contexts/StyleProvider"
+import { useDarkmodeContext } from "../../contexts/DarkmodeProvider"
 
 // import required modules
 import { Pagination, Keyboard } from "swiper"
@@ -46,6 +47,9 @@ const text = {
 }
 
 export default function EducationCarousel(props) {
+    const darkmodeContext = useDarkmodeContext()
+    const darkmode = darkmodeContext.darkmode
+
     const languageContext = useLanguageContext()
     const styleContext = useStyleContext()
 
@@ -86,7 +90,7 @@ export default function EducationCarousel(props) {
                 style={{
                     height: 2,
                     width: "90%",
-                    backgroundColor: "#ccdbfdBF",
+                    backgroundColor: darkmode ? "#063663BF" : "#ccdbfdBF",
                 }}
             />
         </div>
@@ -161,26 +165,35 @@ export default function EducationCarousel(props) {
                 ))}
             </Swiper>
             <Divider />
-            <div
-                style={{
-                    margin: 10,
-                    paddingBottom: 5,
-                    borderRadius: 5,
-                }}
-            >
-                <p
-                    className={languageContext.className}
+            {props.transcriptOfRecords !== null && (
+                <div
                     style={{
-                        margin: 0,
-                        marginBottom: 10,
-                        color: styleContext.content.text.color,
+                        margin: 10,
+                        paddingBottom: 5,
+                        borderRadius: 5,
                     }}
                 >
-                    {text.period[languageContext.language]}
-                </p>
-                <div className="my-custom-pagination-div" />
-                <TranscriptOfRecords />
-            </div>
+                    <p
+                        className={`${
+                            languageContext.className
+                        } education-carousel-item-key-${
+                            darkmode ? "dark" : "light"
+                        }`}
+                        style={{
+                            margin: 0,
+                            marginBottom: 10,
+                            // color: styleContext.content.text.color,
+                        }}
+                    >
+                        {text.period[languageContext.language]}
+                    </p>
+                    <div className="my-custom-pagination-div" />
+
+                    <TranscriptOfRecords
+                        transcriptOfRecords={props.transcriptOfRecords}
+                    />
+                </div>
+            )}
         </div>
     )
 }

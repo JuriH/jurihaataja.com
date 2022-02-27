@@ -2,6 +2,7 @@ import * as React from "react"
 import { IoChevronDown } from "react-icons/io5"
 import { useLanguageContext } from "../../contexts/LanguageProvider"
 import { useStyleContext } from "../../contexts/StyleProvider"
+import { useDarkmodeContext } from "../../contexts/DarkmodeProvider"
 import "./educationItem.css"
 
 import AnimateHeight from "react-animate-height"
@@ -24,7 +25,7 @@ const iconPadding = {
 const RevealIcon = (props) => (
     <IoChevronDown
         style={{
-            color: "#212529",
+            color: props.darkmode ? "#6c757d" : "#212529",
             paddingTop: props.iconPadding.top,
             paddingRight: props.iconPadding.right,
             paddingBottom: props.iconPadding.bottom,
@@ -44,7 +45,9 @@ const SchoolNameLong = (props) => (
         }}
     >
         <p
-            className={props.languageContext.className}
+            className={`${props.languageContext.className} education-item-key-${
+                props.darkmode ? "dark" : "light"
+            }`}
             style={{ margin: 0, fontSize: 14, textAlign: "start" }}
         >
             {props.nameOfSchool.long[props.languageContext.language]}
@@ -60,13 +63,22 @@ const SchoolNameShort = (props) => (
             marginBottom: 10,
         }}
     >
-        <p style={{ margin: 0, fontSize: 16 }}>{props.nameOfSchool.short}</p>
+        <p
+            className={`education-item-key-${
+                props.darkmode ? "dark" : "light"
+            }`}
+            style={{ margin: 0, fontSize: 16 }}
+        >
+            {props.nameOfSchool.short[props.languageContext.language]}
+        </p>
     </div>
 )
 
 const EducationSpecialization = (props) => (
     <p
-        className={props.languageContext.className}
+        className={`${props.languageContext.className} education-item-value-${
+            props.darkmode ? "dark" : "light"
+        }`}
         style={{
             textAlign: "start",
             marginTop: 0,
@@ -97,9 +109,8 @@ const EducationTimeframe = (props) => {
                 display: "inline-block",
                 marginTop: 10,
                 color: "#343a40",
-                // color: props.styleContext.content.text.color,
                 textAlign: "start",
-                backgroundColor: "#ffd670BF",
+                backgroundColor: props.darkmode ? "#ffd670BF" : "#ffd670BF",
                 padding: 5,
                 borderRadius: borderRadius,
                 marginBottom: 5,
@@ -115,6 +126,9 @@ const EducationTimeframe = (props) => {
 }
 
 const EducationItem = (props) => {
+    const darkmodeContext = useDarkmodeContext()
+    const darkmode = darkmodeContext.darkmode
+
     const languageContext = useLanguageContext()
     const styleContext = useStyleContext()
 
@@ -133,13 +147,16 @@ const EducationItem = (props) => {
             style={{
                 display: "flex",
                 flexDirection: "column",
-                backgroundColor: "#edf2fb",
+                backgroundColor: darkmode ? "#30638ebf" : "#edf2fb",
                 borderRadius: borderRadius,
-                borderWidth: 1,
-                borderColor: "#edf2fb",
+                // borderWidth: 0,
+                // borderColor: "#edf2fb",
             }}
         >
             <div
+                className={`education-item-container-${
+                    darkmode ? "dark" : "light"
+                }`}
                 style={{
                     display: "flex",
                     flex: 1,
@@ -148,6 +165,7 @@ const EducationItem = (props) => {
                     alignItems: "center",
                     backgroundColor: mouseOver ? "#ccdbfdBF" : "#d7e3fc80",
                     borderRadius: borderRadius,
+                    borderWidth: 1,
                     paddingTop: 10,
                     cursor: "pointer",
                     transition: "all .3s ease",
@@ -174,9 +192,12 @@ const EducationItem = (props) => {
                     }}
                 >
                     <SchoolNameShort
+                        darkmode={darkmode}
+                        languageContext={languageContext}
                         nameOfSchool={props.education.nameOfSchool}
                     />
                     <SchoolNameLong
+                        darkmode={darkmode}
                         languageContext={languageContext}
                         nameOfSchool={props.education.nameOfSchool}
                     />
@@ -187,11 +208,13 @@ const EducationItem = (props) => {
                         }}
                     >
                         <EducationSpecialization
+                            darkmode={darkmode}
                             languageContext={languageContext}
                             specialization={props.education.specialization}
                             style={styleContext}
                         />
                         <EducationTimeframe
+                            darkmode={darkmode}
                             languageContext={languageContext}
                             yearStarted={props.education.yearStarted}
                             yearEnded={props.education.yearEnded}
@@ -206,7 +229,11 @@ const EducationItem = (props) => {
                         justifyContent: "center",
                     }}
                 >
-                    <RevealIcon iconPadding={iconPadding} revealed={revealed} />
+                    <RevealIcon
+                        darkmode={darkmode}
+                        iconPadding={iconPadding}
+                        revealed={revealed}
+                    />
                 </div>
             </div>
             <AnimateHeight duration={300} height={revealed ? "auto" : 0}>

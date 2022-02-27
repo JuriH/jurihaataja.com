@@ -1,0 +1,29 @@
+[class*="rating-circle-unprocessed-dark-"] {
+    background-color: transparent !important;
+    border: 2px solid #343a40 !important;
+}
+
+[class*="rating-circle-unprocessed-light-"] {
+    background-color: transparent !important;
+    border: 2px solid #dee2e6 !important;
+}
+
+[class*="rating-circle-animated-dark"] {
+    background-color: #6c757d;
+    border: 2px solid #6c757d;
+}
+
+[class*="rating-circle-animated-light"] {
+    background-color: #495057;
+    border: 2px solid #495057;
+}
+
+[class*="rating-circle-unanimated-dark"] {
+    background-color: transparent;
+    border: 2px solid #343a40;
+}
+
+[class*="rating-circle-unanimated-light"] {
+    background-color: transparent;
+    border: 2px solid #dee2e6;
+}

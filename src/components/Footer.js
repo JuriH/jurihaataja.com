@@ -1,13 +1,17 @@
 import { useLanguageContext } from "../contexts/LanguageProvider"
+import { useDarkmodeContext } from "../contexts/DarkmodeProvider"
 
-const text = {
-    footer: {
-        en: "Made with ReactJS by Juri Haataja",
-        fi: "Tehnyt Juri Haataja ReactJS:llä",
-    },
-}
+// const text = {
+//     footer: {
+//         en: "© Juri Haataja 2022",
+//         fi: "© Juri Haataja 2022",
+//     },
+// }
 
 export default function Footer() {
+    const darkmodeContext = useDarkmodeContext()
+    const darkmode = darkmodeContext.darkmode
+
     const languageContext = useLanguageContext()
 
     return (
@@ -23,8 +27,14 @@ export default function Footer() {
                 alignItems: "center",
             }}
         >
-            <p style={{ fontSize: 12 }}>
-                {text.footer[languageContext.language]}
+            <p
+                className={languageContext.className}
+                style={{
+                    fontSize: 12,
+                    color: darkmode ? "#f8f9fa" : "#212529",
+                }}
+            >
+                {"© Juri Haataja 2022"}
             </p>
         </div>
     )

@@ -2,6 +2,7 @@ import * as React from "react"
 import AnimateHeight from "react-animate-height"
 import { IoChevronDown } from "react-icons/io5"
 import { useLanguageContext } from "../../contexts/LanguageProvider"
+import { useDarkmodeContext } from "../../contexts/DarkmodeProvider"
 
 const text = {
     header: {
@@ -11,6 +12,9 @@ const text = {
 }
 
 const Info = (props) => {
+    const darkmodeContext = useDarkmodeContext()
+    const darkmode = darkmodeContext.darkmode
+
     const languageContext = useLanguageContext()
 
     const multiplier = props.fontSize.longText * 1.5
@@ -74,7 +78,9 @@ const Info = (props) => {
     const InfoTextContent = () => (
         <p
             data-testid="info-text"
-            className={languageContext.className}
+            className={`${
+                languageContext.className
+            } education-carousel-item-value-${darkmode ? "dark" : "light"}`}
             key={props.info}
             style={{
                 display: "-webkit-box", // Makes ellipsis work
@@ -90,7 +96,7 @@ const Info = (props) => {
                 lineHeight: 1.5,
                 textAlign: "start",
                 margin: 0,
-                color: props.style.content.text.color,
+                // color: props.style.content.text.color,
                 fontSize: props.fontSize.longText,
                 paddingLeft: props.padding.left * 2,
                 paddingRight: props.padding.right * 2,
@@ -118,11 +124,16 @@ const Info = (props) => {
                 }}
             >
                 <p
+                    className={`${
+                        languageContext.className
+                    } education-carousel-item-key-${
+                        darkmode ? "dark" : "light"
+                    }`}
                     style={{
                         display: "flex",
                         margin: 0,
                         fontSize: props.fontSize.text,
-                        color: props.style.content.header.color,
+                        // color: props.style.content.header.color,
                         paddingLeft: props.padding.left,
                         paddingRight: props.padding.right,
                     }}

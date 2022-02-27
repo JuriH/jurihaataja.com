@@ -1,11 +1,11 @@
 import * as React from "react"
 import LanguageItem from "./LanguageItem"
-import { useStyleContext } from "../../contexts/StyleProvider"
 
 import { FaKeyboard } from "react-icons/fa"
 import { IoChatbubbleEllipses } from "react-icons/io5"
 
 import { useLanguageContext } from "../../contexts/LanguageProvider"
+import { useDarkmodeContext } from "../../contexts/DarkmodeProvider"
 
 const text = {
     header: {
@@ -42,9 +42,15 @@ const languageItems = [
 ]
 
 const Languages = React.forwardRef((props, ref) => {
+    const darkmodeContext = useDarkmodeContext()
+    const darkmode = darkmodeContext.darkmode
+
     const languageContext = useLanguageContext()
-    const styleContext = useStyleContext()
     const [enableHighlight, setEnableHighlight] = React.useState(false)
+
+    React.useEffect(() => {
+        props.inViewCallback()
+    }, [props.inView])
 
     React.useEffect(() => {
         if (props.selectedTab.name === "Languages" && !enableHighlight) {
@@ -58,11 +64,12 @@ const Languages = React.forwardRef((props, ref) => {
 
     return (
         <div
+            className={`Languages-container-${darkmode ? "dark" : "light"}`}
             ref={ref}
             style={{
                 marginTop: 25,
                 marginBottom: 25,
-                backgroundColor: "#f8f9fa",
+                // backgroundColor: "#f8f9fa",
                 paddingTop: 10, // To compensate with added padding in section title for highlighting effect
                 paddingBottom: 10,
                 paddingLeft: 15,
@@ -72,11 +79,10 @@ const Languages = React.forwardRef((props, ref) => {
             }}
         >
             <p
-                className={languageContext.className}
+                className={`${
+                    languageContext.className
+                } Languages-section-header-${darkmode ? "dark" : "light"}`}
                 style={{
-                    backgroundColor: enableHighlight
-                        ? styleContext.content.title.highlighted.backgroundColor
-                        : "transparent",
                     transition: "all .5s ease",
                     WebkitTransition: "all .5s ease",
                     MozTransition: "all .5s ease",
@@ -88,14 +94,19 @@ const Languages = React.forwardRef((props, ref) => {
             >
                 {text.header[languageContext.language]}
             </p>
-            <div style={{ display: "flex", flexDirection: "row" }}>
+            <div
+                ref={props.inViewRef}
+                style={{ display: "flex", flexDirection: "row" }}
+            >
                 <div style={{ flex: 1 }} />
                 <div style={{ display: "flex", flexDirection: "row", flex: 1 }}>
                     <div style={{ flex: 1 }}>
-                        <IoChatbubbleEllipses />
+                        <IoChatbubbleEllipses
+                            color={darkmode ? "#dee2e6" : "#212529"}
+                        />
                     </div>
                     <div style={{ flex: 1 }}>
-                        <FaKeyboard />
+                        <FaKeyboard color={darkmode ? "#dee2e6" : "#212529"} />
                     </div>
                 </div>
             </div>

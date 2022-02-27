@@ -2,7 +2,8 @@ import * as React from "react"
 import { CopyToClipboard } from "react-copy-to-clipboard"
 import { toast } from "react-toastify"
 import { IoCopy } from "react-icons/io5"
-import { useStyleContext } from "../../contexts/StyleProvider"
+import { useDarkmodeContext } from "../../contexts/DarkmodeProvider"
+import { isBrowser, isMobile } from "react-device-detect"
 
 function getTypeToastMessage(type) {
     switch (type) {
@@ -16,7 +17,9 @@ function getTypeToastMessage(type) {
 }
 
 export default function ContactItem(props) {
-    const styleContext = useStyleContext()
+    const darkmodeContext = useDarkmodeContext()
+    const darkmode = darkmodeContext.darkmode
+
     const [mouseOver, setMouseOver] = React.useState(false)
     React.useEffect(() => {
         // console.log("MouseOver: " + mouseOver)
@@ -28,16 +31,29 @@ export default function ContactItem(props) {
         mouseOver && setMouseOver(false)
     }
 
-    const notify = () =>
-        toast(getTypeToastMessage(props.type), {
-            position: "top-center",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-        })
+    const notify = () => {
+        if (darkmode) {
+            toast.dark(getTypeToastMessage(props.type), {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            })
+        } else {
+            toast(getTypeToastMessage(props.type), {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            })
+        }
+    }
 
     return (
         <div
@@ -52,12 +68,11 @@ export default function ContactItem(props) {
             }}
         >
             <div
+                className={`link-${darkmode ? "dark" : "light"}`}
                 style={{
                     display: "inline-flex", // Align icon vertically center with text, while making container fit the content
                     cursor: "pointer",
                     alignItems: "center", // Align icon vertically center with text
-                    // Highlight on mouse event
-                    backgroundColor: mouseOver ? "#e2eafc" : "transparent",
                     padding: 8,
                     borderRadius: 5,
                     marginRight: 10,
@@ -66,10 +81,10 @@ export default function ContactItem(props) {
                     MozTransition: "all .5s ease",
                 }}
                 onMouseOver={() => {
-                    MouseOver()
+                    isBrowser && MouseOver()
                 }}
-                onMouseOut={MouseOut}
-                onMouseUp={MouseOut}
+                onMouseOut={isBrowser ? MouseOut : undefined}
+                onMouseUp={isBrowser ? MouseOut : undefined}
                 onClick={() => {
                     window.open(
                         props.type === "email"
@@ -82,15 +97,20 @@ export default function ContactItem(props) {
                 <span
                     style={{
                         marginRight: 15,
-                        color: styleContext.content.text.color,
+                        color: darkmode ? "#adb5bd" : "#6c757d",
                     }}
                 >
                     {props.text}
                 </span>
-                <props.icon />
+                <props.icon color={darkmode ? "#f8f9fa" : "#212529"} />
             </div>
             <CopyToClipboard
-                style={{ cursor: "pointer", opacity: 0.75 }}
+                style={{
+                    cursor: "pointer",
+                    color: darkmode ? "#f8f9fa" : "#212529",
+                    opacity: 0.75,
+                    padding: 10,
+                }}
                 onCopy={notify}
                 text={props.text.replace(/ /g, "")}
             >

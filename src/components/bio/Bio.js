@@ -2,6 +2,37 @@ import * as React from "react"
 import { useStyleContext } from "../../contexts/StyleProvider"
 import { useLanguageContext } from "../../contexts/LanguageProvider"
 import monthNumberToString from "../../utils/monthNumberToString"
+import { useDarkmodeContext } from "../../contexts/DarkmodeProvider"
+import "../../App.css"
+
+// const items = [
+//     {
+//         en: "Firstname",
+//         fi: "Etunimi",
+//     },
+//     {
+//         en: "Lastname",
+//         fi: "Sukunimi",
+//     },
+//     {
+//         en: "Born",
+//         fi: "Syntymäaika",
+//     },
+//     {
+//         en: "Age",
+//         fi: "Ikä",
+//     },
+//     {
+//         header: {
+//             en: "Status",
+//             fi: "Status",
+//         },
+//         value: {
+//             en: "Student",
+//             fi: "Opiskelija",
+//         },
+//     },
+// ]
 
 const text = {
     header: {
@@ -36,12 +67,11 @@ const Firstname = (props) => {
             }}
         >
             <p
-                className={props.languageContext.className}
-                style={{ color: props.styleContext.content.header.color }}
+                className={`${props.languageContext.className} bio-key-${props.darkmode}`}
             >
                 {text[props.languageContext.language]}
             </p>
-            <p style={{ color: props.styleContext.content.text.color }}>Juri</p>
+            <p className={`bio-value-${props.darkmode}`}>Juri</p>
         </div>
     )
 }
@@ -61,14 +91,11 @@ const Lastname = (props) => {
             }}
         >
             <p
-                className={props.languageContext.className}
-                style={{ color: props.styleContext.content.header.color }}
+                className={`${props.languageContext.className} bio-key-${props.darkmode}`}
             >
                 {text[props.languageContext.language]}
             </p>
-            <p style={{ color: props.styleContext.content.text.color }}>
-                Haataja
-            </p>
+            <p className={`bio-value-${props.darkmode}`}>Haataja</p>
         </div>
     )
 }
@@ -90,21 +117,19 @@ const Born = (props) => {
             }}
         >
             <p
-                className={props.languageContext.className}
-                style={{ color: props.styleContext.content.header.color }}
+                className={`${props.languageContext.className} bio-key-${props.darkmode}`}
             >
                 {text.header[props.languageContext.language]}
             </p>
             <div style={{ display: "flex", flexDirection: "row" }}>
                 <p
-                    className={props.languageContext.className}
-                    style={{ color: props.styleContext.content.text.color }}
+                    className={`${props.languageContext.className} bio-value-${props.darkmode}`}
                 >
                     {monthNumberToString(1, props.languageContext.language)}
                 </p>
                 <p
+                    className={`bio-value-${props.darkmode}`}
                     style={{
-                        color: props.styleContext.content.text.color,
                         whiteSpace: "pre", // To keep leading whitespace in paragraph
                     }}
                 >
@@ -130,12 +155,11 @@ const Age = (props) => {
             }}
         >
             <p
-                className={props.languageContext.className}
-                style={{ color: props.styleContext.content.header.color }}
+                className={`${props.languageContext.className} bio-key-${props.darkmode}`}
             >
                 {text[props.languageContext.language]}
             </p>
-            <p style={{ color: props.styleContext.content.text.color }}>
+            <p className={`bio-value-${props.darkmode}`}>
                 {getAge(new Date(new Date("1996-02-21T07:00:00")))}
             </p>
         </div>
@@ -156,7 +180,7 @@ const Status = (props) => {
 
     return (
         <div
-            className={props.languageContext.className}
+            className={`${props.languageContext.className} bio-key-${props.darkmode}`}
             style={{
                 display: "flex",
                 flexDirection: "row",
@@ -165,7 +189,7 @@ const Status = (props) => {
             }}
         >
             <p>{text.header[props.languageContext.language]}</p>
-            <p style={{ color: props.styleContext.content.text.color }}>
+            <p className={`bio-value-${props.darkmode}`}>
                 {text.value[props.languageContext.language]}
             </p>
         </div>
@@ -194,10 +218,10 @@ const Goal = (props) => {
             }}
         >
             <p
+                className={`${props.languageContext.className} bio-key-${props.darkmode}`}
                 style={{
                     alignSelf: "flex-start",
                     textAlign: "start",
-                    color: props.styleContext.content.header.color,
                 }}
             >
                 {text.header[props.languageContext.language]}
@@ -210,8 +234,8 @@ const Goal = (props) => {
                 }}
             >
                 <p
+                    className={`bio-value-${props.darkmode}`}
                     style={{
-                        color: props.styleContext.content.text.color,
                         paddingBottom: 10,
                         margin: 0,
                     }}
@@ -245,9 +269,9 @@ const Achievement = (props) => {
             }}
         >
             <p
+                className={`${props.languageContext.className} bio-key-${props.darkmode}`}
                 style={{
                     alignSelf: "flex-start",
-                    color: props.styleContext.content.header.color,
                 }}
             >
                 {text.header[props.languageContext.language]}
@@ -260,8 +284,8 @@ const Achievement = (props) => {
                 }}
             >
                 <p
+                    className={`${props.styleContext.className} bio-value-${props.darkmode}`}
                     style={{
-                        color: props.styleContext.content.text.color,
                         paddingBottom: 10,
                         margin: 0,
                     }}
@@ -274,9 +298,16 @@ const Achievement = (props) => {
 }
 
 const Bio = React.forwardRef((props, ref) => {
+    const darkmodeContext = useDarkmodeContext()
+    const darkmode = darkmodeContext.darkmode
+
     const languageContext = useLanguageContext()
     const styleContext = useStyleContext()
     const [enableHighlight, setEnableHighlight] = React.useState(false)
+
+    React.useEffect(() => {
+        props.inViewCallback()
+    }, [props.inView])
 
     React.useEffect(() => {
         if (props.selectedTab.name === "Bio" && !enableHighlight) {
@@ -290,11 +321,12 @@ const Bio = React.forwardRef((props, ref) => {
 
     return (
         <div
+            className={`Bio-container-${darkmode ? "dark" : "light"}`}
             ref={ref}
+            ref={props.inViewRef}
             style={{
                 marginTop: 25,
                 marginBottom: 25,
-                backgroundColor: "#f8f9fa",
                 paddingBottom: 10,
                 paddingLeft: 15,
                 paddingRight: 15,
@@ -303,11 +335,10 @@ const Bio = React.forwardRef((props, ref) => {
             }}
         >
             <p
-                className={languageContext.className}
+                className={`${languageContext.className} Bio-section-header-${
+                    darkmode ? "dark" : "light"
+                }`}
                 style={{
-                    backgroundColor: enableHighlight
-                        ? styleContext.content.title.highlighted.backgroundColor
-                        : "transparent",
                     transition: "all .5s ease",
                     WebkitTransition: "all .5s ease",
                     MozTransition: "all .5s ease",
@@ -322,30 +353,37 @@ const Bio = React.forwardRef((props, ref) => {
             <Firstname
                 languageContext={languageContext}
                 styleContext={styleContext}
+                darkmode={darkmode ? "dark" : "light"}
             />
             <Lastname
                 languageContext={languageContext}
                 styleContext={styleContext}
+                darkmode={darkmode ? "dark" : "light"}
             />
             <Born
                 languageContext={languageContext}
                 styleContext={styleContext}
+                darkmode={darkmode ? "dark" : "light"}
             />
             <Age
                 languageContext={languageContext}
                 styleContext={styleContext}
+                darkmode={darkmode ? "dark" : "light"}
             />
             <Status
                 languageContext={languageContext}
                 styleContext={styleContext}
+                darkmode={darkmode ? "dark" : "light"}
             />
             <Goal
                 languageContext={languageContext}
                 styleContext={styleContext}
+                darkmode={darkmode ? "dark" : "light"}
             />
             <Achievement
                 languageContext={languageContext}
                 styleContext={styleContext}
+                darkmode={darkmode ? "dark" : "light"}
             />
         </div>
     )

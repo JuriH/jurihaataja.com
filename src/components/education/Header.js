@@ -1,7 +1,11 @@
 import * as React from "react"
 import { useLanguageContext } from "../../contexts/LanguageProvider"
+import { useDarkmodeContext } from "../../contexts/DarkmodeProvider"
 
 export default function Header(props) {
+    const darkmodeContext = useDarkmodeContext()
+    const darkmode = darkmodeContext.darkmode
+
     const languageContext = useLanguageContext()
     return (
         <div
@@ -14,10 +18,12 @@ export default function Header(props) {
             }}
         >
             <p
-                className={languageContext.className}
+                className={`${
+                    languageContext.className
+                } education-carousel-item-key-${darkmode ? "dark" : "light"}`}
                 style={{
                     fontSize: props.fontSize.mainHeader,
-                    color: props.style.content.header.color,
+                    // color: darkmode ? "" : "#000814",
                     margin: 0,
                     textOverflow: "ellipsis",
                 }}

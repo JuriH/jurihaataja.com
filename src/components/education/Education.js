@@ -1,6 +1,7 @@
 import * as React from "react"
-import { useStyleContext } from "../../contexts/StyleProvider"
 import { useLanguageContext } from "../../contexts/LanguageProvider"
+import { useDarkmodeContext } from "../../contexts/DarkmodeProvider"
+
 import EducationItem from "./EducationItem"
 
 import { educations } from "../../resources/educations"
@@ -13,10 +14,16 @@ const text = {
 }
 
 const Education = React.forwardRef((props, ref) => {
+    const darkmodeContext = useDarkmodeContext()
+    const darkmode = darkmodeContext.darkmode
+
     const languageContext = useLanguageContext()
-    const styleContext = useStyleContext()
 
     const [enableHighlight, setEnableHighlight] = React.useState(false)
+
+    React.useEffect(() => {
+        props.inViewCallback()
+    }, [props.inView])
 
     React.useEffect(() => {
         if (props.selectedTab.name === "Education" && !enableHighlight) {
@@ -30,7 +37,9 @@ const Education = React.forwardRef((props, ref) => {
 
     return (
         <div
+            className={`Education-container-${darkmode ? "dark" : "light"}`}
             ref={ref}
+            ref={props.inViewRef}
             style={{
                 marginBottom: 25,
                 paddingLeft: 15,
@@ -40,15 +49,14 @@ const Education = React.forwardRef((props, ref) => {
                 width: props.windowDimensions.width > 500 ? 500 : "75vw",
                 justifyContent: "space-between",
                 alignItems: "center",
-                backgroundColor: "#f8f9fa",
+                // backgroundColor: "#f8f9fa",
             }}
         >
             <p
-                className={languageContext.className}
+                className={`${
+                    languageContext.className
+                } Education-section-header-${darkmode ? "dark" : "light"}`}
                 style={{
-                    backgroundColor: enableHighlight
-                        ? styleContext.content.title.highlighted.backgroundColor
-                        : "transparent",
                     transition: "all .5s ease",
                     WebkitTransition: "all .5s ease",
                     MozTransition: "all .5s ease",
@@ -56,7 +64,7 @@ const Education = React.forwardRef((props, ref) => {
                     display: "inline-block",
                     padding: 10,
                     borderRadius: 10,
-                    color: styleContext.content.header.color,
+                    // color: styleContext.content.header.color,
                 }}
             >
                 {text.header[languageContext.language]}

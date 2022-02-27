@@ -37,8 +37,9 @@
     }
 }
 /**
-Global style(s)
+* Global style(s)
 */
+
 span,
 p,
 img {
@@ -50,10 +51,91 @@ div {
     -webkit-tap-highlight-color: transparent;
 }
 
-.animate-language {
+.animate {
     transition: all 0.25s ease;
     -webkit-transition: all 0.25s ease;
     -moz-transition: all 0.25s ease;
     -webkit-animation-duration: 25s;
     animation-duration: 25s;
+}
+
+/**
+*
+* Light themes 
+*
+ **/
+
+/** Apply effect only for mouse */
+@media only screen and (min-width: 450px) {
+    .link-light:hover {
+        background-color: #e2eafc;
+    }
+    /* [class*="-tab"]:hover {
+        background-color: red !important;
+    } */
+}
+
+.active-tab-light {
+    background-color: rgba(226, 234, 252, 0.75);
+}
+
+div [class$="-container-light"] {
+    background-color: rgb(248, 249, 250);
+}
+
+/** Bio-items **/
+
+[class$="-key-light"] {
+    color: #212529;
+}
+
+[class$="-value-light"] {
+    color: #6c757d;
+}
+
+/**
+*
+* Dark themes 
+*
+ **/
+
+/** Apply effect only for mouse */
+@media only screen and (min-width: 450px) {
+    .link-dark:hover {
+        background-color: #0d47a1;
+    }
+    /* [class*="-tab"]:hover {
+        background-color: blue !important;
+    } */
+}
+
+.active-tab-dark {
+    background-color: transparent;
+    border: 2px solid #397299 !important;
+}
+
+.selected-tab-dark {
+    background-color: #00377e !important;
+}
+
+div [class$="-container-dark"] {
+    background-color: rgb(33, 37, 41);
+}
+
+[class$="-section-header-dark"] {
+    color: #f8f9fa;
+}
+
+[class$="-key-dark"] {
+    color: #f8f9fa;
+}
+
+[class$="-value-dark"] {
+    color: #adb5bd;
+}
+
+/** Tab themes **/
+
+.selected-section {
+    background-color: rgba(254, 228, 64, 0.5);
 }

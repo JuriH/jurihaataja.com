@@ -1,5 +1,7 @@
 import * as React from "react"
-import { useCookiesContext } from "../../contexts/CookiesContext"
+import { useCookiesContext } from "../../contexts/CookiesProvider"
+import { useDarkmodeContext } from "../../contexts/DarkmodeProvider"
+import "./skillItem.css"
 
 const circleRadius = 23
 
@@ -32,7 +34,6 @@ const EmptyCircleBorder = (props) => (
     <div
         className={props.className}
         style={{
-            border: "2px solid #ced4da",
             width: circleRadius - 2,
             height: circleRadius - 2,
             borderRadius: 50,
@@ -40,9 +41,6 @@ const EmptyCircleBorder = (props) => (
             justifyContent: "center",
             alignItems: "center",
             marginRight: 5,
-            transition: "all .5s ease",
-            WebkitTransition: "all .5s ease",
-            MozTransition: "all .5s ease",
         }}
     />
 )
@@ -80,11 +78,17 @@ function Rating(props) {
         ratingList.push(
             props.rating > i ? (
                 <EmptyCircleBorder
-                    key={"rating" + i}
-                    className={"ratingCircle" + i}
+                    key={"rating-circle-animated-" + i}
+                    className={`animate rating-circle-animated-light
+                    rating-circle-unprocessed-light-${i}`}
                 />
             ) : (
-                <EmptyCircleBorder key={"rating" + i} />
+                <EmptyCircleBorder
+                    key={`rating-circle-unanimated-${
+                        props.darkmode ? "dark" : "light"
+                    }`}
+                    className={`animate rating-circle-unanimated-light`}
+                />
             )
         )
     }
@@ -106,17 +110,43 @@ function Rating(props) {
     )
 }
 
-function createAnimTimeout(cookies, index) {
+function createAnimTimeout(darkmode, cookies, index) {
+    /**
+     * Could benefit from some optimization/simplification
+     */
+
+    // Remove placeholder element from rating-circles that blocks the actual styling in order to animate filling the circles
+    // Not the prettiest code, but it works even if user changes between dark- and lightmodes during the animation-loop
     timeout = setTimeout(() => {
-        // console.log("Animating circles at index: " + (index - 1))
-        document.body
-            .querySelectorAll(`.ratingCircle${index - 1}`)
-            .forEach((circle) => {
-                circle.style.backgroundColor = "#495057"
-                circle.style.borderColor = "#495057"
+        let els = document.querySelectorAll(
+            `.rating-circle-unprocessed-${darkmode ? "dark" : "light"}-${index}`
+        )
+        if (els.length > 0) {
+            els.forEach((circle) => {
+                circle.classList.remove(
+                    `rating-circle-unprocessed-${
+                        darkmode ? "dark" : "light"
+                    }-${index}`
+                )
             })
+        } else {
+            els = document.querySelectorAll(
+                `.rating-circle-unprocessed-${
+                    !darkmode ? "dark" : "light"
+                }-${index}`
+            )
+            if (els.length > 0) {
+                els.forEach((circle) => {
+                    circle.classList.remove(
+                        `rating-circle-unprocessed-${
+                            !darkmode ? "dark" : "light"
+                        }-${index}`
+                    )
+                })
+            }
+        }
         if (index < 5) {
-            createAnimTimeout(cookies, index + 1)
+            createAnimTimeout(darkmode, cookies, index + 1)
         } else {
             // // Cookie for indicating that the Rating-circles animation has been played
             // cookies.set("skills_animation_played", {
@@ -131,6 +161,9 @@ function createAnimTimeout(cookies, index) {
 }
 
 export default function SkillItem(props) {
+    const darkmodeContext = useDarkmodeContext()
+    const darkmode = darkmodeContext.darkmode
+
     const cookiesContext = useCookiesContext()
     const cookies = cookiesContext.cookies
     React.useEffect(() => {
@@ -139,7 +172,8 @@ export default function SkillItem(props) {
             timeout === null
             // && !animationPlayedCookieFound(cookies)
         ) {
-            createAnimTimeout(cookies, 1)
+            console.log("Animating")
+            createAnimTimeout(darkmode, cookies, 0)
         }
     }, [props.triggerAnim, props.inView])
 
@@ -154,8 +188,17 @@ export default function SkillItem(props) {
                 justifyContent: "space-between",
             }}
         >
-            <p style={{ textAlign: "start", marginRight: 15 }}>{props.text}</p>
-            <Rating rating={props.rating} cookies={cookies} />
+            <p
+                className={"Skill-item-key-dark"}
+                style={{ textAlign: "start", marginRight: 15 }}
+            >
+                {props.text}
+            </p>
+            <Rating
+                darkmode={darkmode}
+                rating={props.rating}
+                cookies={cookies}
+            />
         </div>
     )
 }

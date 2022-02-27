@@ -7,7 +7,8 @@ import reportWebVitals from "./reportWebVitals"
 import { StyleProvider } from "./contexts/StyleProvider"
 import { WindowDimensionsProvider } from "./contexts/WindowDimensionsProvider"
 import { LanguageProvider } from "./contexts/LanguageProvider"
-import { CookiesProvider } from "./contexts/CookiesContext"
+import { CookiesProvider } from "./contexts/CookiesProvider"
+import { DarkmodeProvider } from "./contexts/DarkmodeProvider"
 
 ReactDOM.render(
     <React.StrictMode>
@@ -15,7 +16,9 @@ ReactDOM.render(
             <WindowDimensionsProvider>
                 <CookiesProvider>
                     <LanguageProvider>
-                        <App />
+                        <DarkmodeProvider>
+                            <App />
+                        </DarkmodeProvider>
                     </LanguageProvider>
                 </CookiesProvider>
             </WindowDimensionsProvider>

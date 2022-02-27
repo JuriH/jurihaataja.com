@@ -1,8 +1,8 @@
 import * as React from "react"
-import { useCookiesContext } from "../contexts/CookiesContext"
+import { useCookiesContext } from "./CookiesProvider"
 
 let timeout = null
-const animClassName = "animate-language"
+const animClassName = "animate"
 
 function getLanguageFromBrowser() {
     let lang = navigator.language || navigator.userLanguage
@@ -41,7 +41,7 @@ export function LanguageProvider({ children }) {
 
     function updateLanguage(lang) {
         // Store selected language in language-cookie only if user has allowed cookies
-        if (cookies.get("cookies_consent") === true) {
+        if (cookies.get("cookies_consent") === "true") {
             // Store selected language in persistent cookie (30-days lifetime)
             let future = new Date()
             future.setDate(future.getDate() + 30)

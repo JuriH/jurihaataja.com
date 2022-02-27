@@ -1,0 +1,28 @@
+/** Apply effect only for mouse */
+@media only screen and (min-width: 450px) {
+    .transcript-of-records-dark:hover {
+        background-color: #b185db !important;
+    }
+
+    .transcript-of-records-light:hover {
+        background-color: #b185db !important;
+    }
+
+    [class^="transcript-of-records"]:active:hover {
+        background-color: #9163cb;
+    }
+}
+
+[class^="transcript-of-records"] {
+    background-color: #c19ee0;
+}
+
+.transcript-of-records-dark {
+    border: 1px solid #073c6f;
+    color: #343a40;
+}
+
+.transcript-of-records-light {
+    border: 1px solid#f8f9fa;
+    color: #f8f9fa;
+}
